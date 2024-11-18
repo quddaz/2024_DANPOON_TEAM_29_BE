@@ -1,5 +1,6 @@
 package com.globalnest.be.oauth.dto;
 
+import com.globalnest.be.user.domain.type.Part;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,7 +23,7 @@ public class CustomOAuth2User implements OAuth2User {
     private final String name;
     private final String email;
     private final List<String> roles;
-
+    private final Part part;
     @Override
     public Map<String, Object> getAttributes() {
         return null;
