@@ -1,4 +1,4 @@
-package com.globalnest.be.oauth.util;
+package com.globalnest.be.oauth.util.jwt;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
