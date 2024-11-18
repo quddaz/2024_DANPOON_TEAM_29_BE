@@ -43,7 +43,8 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
         return CustomOAuth2User.builder()
             .userId(user.getId())
             .socialId(user.getSocialId())
-            .name(user.getNickName())
+            .name(user.getName())
+            .nickname(user.getNickName())
             .email(user.getEmail())
             .roles(List.of(user.getRole().name()))
             .part(user.getPart())
@@ -62,13 +63,14 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
     private User getOrGenerateMember(OAuth2Response oAuth2Response) {
         return userRepository.findBySocialId(oAuth2Response.getProviderId())
             .orElseGet(() -> userRepository.save(User.builder()
+                .name(oAuth2Response.getName())
                 .nickName(oAuth2Response.getName())
                 .email(oAuth2Response.getEmail())
                 .role(Role.GUEST)
                 .oAuthType(oAuth2Response.getProvider())
                 .socialId(oAuth2Response.getProviderId())
                 .profile_image(oAuth2Response.getProfileImage())
-                .language(Language.KOREAN)// 기본 KOREAN
+                .language(null)// 기본 KOREAN
                 .part(null)
                 .is_alarm_allowed(false)  // 알람 설정 기본 false
                 .ageRange(null) // 나이대 미상 시작

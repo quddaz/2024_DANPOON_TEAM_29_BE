@@ -21,6 +21,7 @@ public class CustomOAuth2User implements OAuth2User {
     private final Long userId;
     private final String socialId;
     private final String name;
+    private final String nickname;
     private final String email;
     private final List<String> roles;
     private final Part part;

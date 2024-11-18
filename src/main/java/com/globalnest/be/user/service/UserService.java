@@ -23,7 +23,7 @@ public class UserService {
     public void registerUser(FirstLoginRequest request,String file_url, Long id){
         User user = userRepository.findById(id)
             .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
-
+        user.setName(request.name());
         user.setNickName(request.nickname());
         user.setPart(request.part());
         user.setLanguage(request.language());
