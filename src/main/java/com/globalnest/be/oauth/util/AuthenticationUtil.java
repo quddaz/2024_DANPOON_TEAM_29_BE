@@ -21,7 +21,8 @@ public class AuthenticationUtil {
             .userId(user.getId())
             .socialId(user.getSocialId())
             .email(user.getEmail())
-            .name(user.getNickName())
+            .name(user.getName())
+            .nickname(user.getNickName())
             .roles(Collections.singletonList(user.getRoleKey()))
             .build();
 

@@ -22,6 +22,9 @@ public class User {
     @Column(name = "email", length = 25)
     private String email;
 
+    @Column(name = "name", length = 20)
+    private String name;
+
     @Column(name = "nick_name", length = 20)
     private String nickName;
 
@@ -55,10 +58,11 @@ public class User {
     private AgeRange ageRange;
 
     @Builder
-    public User(String email, String nickName, OAuthType oAuthType, String socialId, Role role,
+    public User(String email, String name, String nickName, OAuthType oAuthType, String socialId, Role role,
                 String profile_image, Language language, Part part, Boolean is_alarm_allowed,
                 AgeRange ageRange) {
         this.email = email;
+        this.name = name;
         this.nickName = nickName;
         this.oAuthType = oAuthType;
         this.socialId = socialId;
