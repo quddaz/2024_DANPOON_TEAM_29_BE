@@ -46,6 +46,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
             .name(user.getNickName())
             .email(user.getEmail())
             .roles(List.of(user.getRole().name()))
+            .part(user.getPart())
             .build();
     }
 
@@ -70,7 +71,7 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .language(Language.KOREAN)// 기본 KOREAN
                 .part(null)
                 .is_alarm_allowed(false)  // 알람 설정 기본 false
-                .ageRange(AgeRange.NULL) // 나이대 미상 시작
+                .ageRange(null) // 나이대 미상 시작
                 .build())
             );
     }

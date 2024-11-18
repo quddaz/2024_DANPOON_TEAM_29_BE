@@ -3,16 +3,14 @@ package com.globalnest.be.user.domain;
 
 import com.globalnest.be.user.domain.type.*;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
 @Table(name = "users")
 @Entity
 @Getter
+@Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User {
 
@@ -76,5 +74,6 @@ public class User {
         return this.role.getKey();
     }
     public List<String> getRoles(){return List.of(this.role.name());}
+
 
 }
