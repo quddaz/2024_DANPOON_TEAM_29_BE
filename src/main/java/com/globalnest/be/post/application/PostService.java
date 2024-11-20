@@ -5,12 +5,14 @@ import com.globalnest.be.comment.repository.CommentRepository;
 import com.globalnest.be.global.application.AWSStorageService;
 import com.globalnest.be.post.application.type.SortType;
 import com.globalnest.be.post.domain.Post;
+import com.globalnest.be.post.domain.PostLike;
 import com.globalnest.be.post.domain.PostTag;
 import com.globalnest.be.post.domain.type.Tag;
 import com.globalnest.be.post.dto.request.PostUploadRequest;
 import com.globalnest.be.post.dto.response.PostDetailResponse;
 import com.globalnest.be.post.exception.PostNotFoundException;
 import com.globalnest.be.post.exception.errorCode.PostErrorCode;
+import com.globalnest.be.post.repository.PostLikeRepository;
 import com.globalnest.be.post.repository.dto.PostRepoResponse;
 import com.globalnest.be.post.dto.response.PostResponse;
 import com.globalnest.be.post.dto.response.PostResponseList;
@@ -19,6 +21,7 @@ import com.globalnest.be.post.repository.PostTagRepository;
 import com.globalnest.be.user.domain.User;
 import com.globalnest.be.user.service.UserService;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,7 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final PostTagRepository postTagRepository;
+    private final PostLikeRepository postLikeRepository;
     private final CommentRepository commentRepository;
     private final UserService userService;
     private final AWSStorageService awsStorageService;
@@ -102,6 +106,32 @@ public class PostService {
                     PostTag postTag = tag.toPostTag(savedPost);
                     postTagRepository.save(postTag);
                 });
+    }
+
+    @Transactional
+    public String likePost(Long userId, Long placeId) {
+        User user = userService.findUserById(userId);
+        Post place = findPostById(placeId);
+
+        AtomicBoolean isCreated = new AtomicBoolean(false);
+
+        // 북마크가 이미 존재하면 삭제, 존재하지 않으면 저장
+        postLikeRepository.findByPostAndUser(place, user)
+                .ifPresentOrElse(
+                        bookmark -> {
+                            postLikeRepository.delete(bookmark);
+                            isCreated.set(false);
+                        },
+                        () -> {
+                            postLikeRepository.save(PostLike.of(user, place));
+                            isCreated.set(true);
+                        });
+
+        if (isCreated.get()) {
+            return "북마크 저장 성공";
+        } else {
+            return "북마크 삭제 성공";
+        }
     }
 
     public Post findPostById(Long postId) {

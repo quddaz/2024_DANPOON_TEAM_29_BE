@@ -39,4 +39,11 @@ public class PostLike {
         this.user = user;
         this.post = post;
     }
+
+    public static PostLike of(User user, Post post) {
+        return PostLike.builder()
+                .user(user)
+                .post(post)
+                .build();
+    }
 }

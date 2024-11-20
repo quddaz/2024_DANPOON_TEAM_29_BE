@@ -81,4 +81,17 @@ public class PostController {
                 .status(HttpStatus.OK)
                 .body(ResponseTemplate.EMPTY_RESPONSE);
     }
+
+    @Operation(summary = "게시글 좋아요 저장/삭제", description = "게시글 좋아요 저장/삭제")
+    @GetMapping("/like/{postId}")
+    public ResponseEntity<ResponseTemplate<?>> saveBookMark(
+            @PathVariable Long postId,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ) {
+        String result = postService.likePost(user.getUserId(), postId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseTemplate.from(result));
+    }
 }
