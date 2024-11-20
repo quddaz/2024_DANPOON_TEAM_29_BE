@@ -4,6 +4,7 @@ package com.globalnest.be.oauth.controller;
 import com.globalnest.be.global.dto.ResponseTemplate;
 import com.globalnest.be.oauth.dto.CustomOAuth2User;
 import com.globalnest.be.oauth.service.AuthService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -43,6 +44,7 @@ public class AuthController {
             .body(ResponseTemplate.EMPTY_RESPONSE);
     }
 
+    @Operation(summary = "테스트 토큰 발급", description = "userId를 받아 테스트 토큰을 발급합니다")
     @GetMapping("/test/{userId}")
     public String test(@PathVariable Long userId){
         return authService.generateTestToken(userId);
