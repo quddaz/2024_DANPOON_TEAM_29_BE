@@ -1,13 +1,16 @@
 package com.globalnest.be.user.service;
 
+import com.globalnest.be.user.domain.Subscribe;
 import com.globalnest.be.user.domain.User;
 import com.globalnest.be.user.dto.request.FirstLoginRequest;
 import com.globalnest.be.user.exception.UserNotFoundException;
 import com.globalnest.be.user.exception.errorCode.UserErrorCode;
+import com.globalnest.be.user.repository.SubscribeRepository;
 import com.globalnest.be.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
@@ -16,6 +19,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final SubscribeRepository subscribeRepository;
 
     /**
      * 첫 로그인 시 정보를 받아오는 메소드
@@ -36,5 +40,15 @@ public class UserService {
     public User findUserById(Long id){
         return userRepository.findById(id)
             .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
+    }
+
+    @Transactional
+    public void subscribeUser(Long userId, Long targetUserId){
+        User user = userRepository.findById(userId)
+            .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
+        User targetUser = userRepository.findById(targetUserId)
+            .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
+
+        subscribeRepository.save(Subscribe.of(targetUser, user));
     }
 }

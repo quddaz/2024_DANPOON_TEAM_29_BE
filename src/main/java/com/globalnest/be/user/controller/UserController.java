@@ -36,4 +36,15 @@ public class UserController {
             .status(HttpStatus.OK)
             .body(ResponseTemplate.EMPTY_RESPONSE);
     }
+
+    @Operation(summary = "유저 구독", description = "유저 구독")
+    @GetMapping("/subscribe/{userId}")
+    public ResponseEntity<?> subscribeUser(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+                                           @PathVariable Long userId) {
+        userService.subscribeUser(customOAuth2User.getUserId(), userId);
+
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(ResponseTemplate.EMPTY_RESPONSE);
+    }
 }
