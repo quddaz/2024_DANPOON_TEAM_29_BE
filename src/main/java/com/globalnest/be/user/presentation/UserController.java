@@ -1,11 +1,11 @@
-package com.globalnest.be.user.controller;
+package com.globalnest.be.user.presentation;
 
 import com.globalnest.be.global.application.AWSStorageService;
 import com.globalnest.be.global.dto.ResponseTemplate;
 import com.globalnest.be.oauth.dto.CustomOAuth2User;
 import com.globalnest.be.user.dto.request.FirstLoginRequest;
 import com.globalnest.be.user.dto.response.UserRecommendResponseList;
-import com.globalnest.be.user.service.UserService;
+import com.globalnest.be.user.aplication.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

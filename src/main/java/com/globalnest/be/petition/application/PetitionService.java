@@ -14,7 +14,7 @@ import com.globalnest.be.petition.exception.errorcode.PetitionErrorCode;
 import com.globalnest.be.petition.repository.AgreementRepository;
 import com.globalnest.be.petition.repository.PetitionRepository;
 import com.globalnest.be.user.domain.User;
-import com.globalnest.be.user.service.UserService;
+import com.globalnest.be.user.aplication.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

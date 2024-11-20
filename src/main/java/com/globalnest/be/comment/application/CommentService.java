@@ -7,7 +7,7 @@ import com.globalnest.be.comment.repository.CommentRepository;
 import com.globalnest.be.post.application.PostService;
 import com.globalnest.be.post.domain.Post;
 import com.globalnest.be.user.domain.User;
-import com.globalnest.be.user.service.UserService;
+import com.globalnest.be.user.aplication.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
