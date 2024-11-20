@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -40,5 +41,10 @@ public class AuthController {
         return ResponseEntity
             .status(HttpStatus.OK)
             .body(ResponseTemplate.EMPTY_RESPONSE);
+    }
+
+    @GetMapping("/test/{userId}")
+    public String test(@PathVariable Long userId){
+        return authService.generateTestToken(userId);
     }
 }

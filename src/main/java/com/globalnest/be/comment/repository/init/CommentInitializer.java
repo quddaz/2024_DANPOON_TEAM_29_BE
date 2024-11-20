@@ -17,7 +17,7 @@ import org.springframework.core.annotation.Order;
 
 @Slf4j
 @RequiredArgsConstructor
-@Order(2)
+@Order(3)
 @DummyDataInit
 public class CommentInitializer implements ApplicationRunner {
 

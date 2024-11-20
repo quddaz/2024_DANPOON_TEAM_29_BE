@@ -5,6 +5,7 @@ import com.globalnest.be.oauth.exception.errorcode.AuthErrorCode;
 import com.globalnest.be.oauth.util.jwt.JwtTokenProvider;
 import com.globalnest.be.user.domain.User;
 import jakarta.servlet.http.HttpServletResponse;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
+
     private final JwtTokenProvider jwtTokenProvider;
+
     public void reIssueToken(String refreshToken, HttpServletResponse response) {
 
         if (!jwtTokenProvider.validateToken(refreshToken)) {
@@ -26,5 +29,9 @@ public class AuthService {
 
         response.addHeader("Set-Cookie", newRefreshToken.toString());
         response.setHeader("Authorization", "Bearer " + accessToken);
+    }
+
+    public String generateTestToken(Long userId) {
+        return jwtTokenProvider.createAccessToken(userId, List.of("Role_User"));
     }
 }
