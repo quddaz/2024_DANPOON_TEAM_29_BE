@@ -10,8 +10,6 @@ import com.globalnest.be.oauth.dto.social.OAuth2Response;
 import com.globalnest.be.oauth.exception.LoginTypeNotSupportException;
 import com.globalnest.be.oauth.exception.errorcode.AuthErrorCode;
 import com.globalnest.be.user.domain.User;
-import com.globalnest.be.user.domain.type.AgeRange;
-import com.globalnest.be.user.domain.type.Language;
 import com.globalnest.be.user.domain.type.Role;
 import com.globalnest.be.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -69,10 +67,10 @@ public class CustomOAuth2UserService extends DefaultOAuth2UserService {
                 .role(Role.GUEST)
                 .oAuthType(oAuth2Response.getProvider())
                 .socialId(oAuth2Response.getProviderId())
-                .profile_image(oAuth2Response.getProfileImage())
+                .profileImage(oAuth2Response.getProfileImage())
                 .language(null)// 기본 KOREAN
                 .part(null)
-                .is_alarm_allowed(false)  // 알람 설정 기본 false
+                .isAlarmAllowed(false)  // 알람 설정 기본 false
                 .ageRange(null) // 나이대 미상 시작
                 .build())
             );

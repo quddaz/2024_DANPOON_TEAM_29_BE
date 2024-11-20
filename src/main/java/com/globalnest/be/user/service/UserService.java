@@ -27,7 +27,7 @@ public class UserService {
         user.setNickName(request.nickname());
         user.setPart(request.part());
         user.setLanguage(request.language());
-        user.setProfile_image(file_url);
+        user.setProfileImage(file_url);
         user.setAgeRange(request.ageRange());
 
         userRepository.save(user);
