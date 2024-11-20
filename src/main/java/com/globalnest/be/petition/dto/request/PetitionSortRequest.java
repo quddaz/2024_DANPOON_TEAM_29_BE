@@ -1,12 +1,12 @@
 package com.globalnest.be.petition.dto.request;
 
-/**
- * 1. 만료된 것 포함인가?
- * 2. 카테고리 별
- * 3. 동의자 수
- */
+import com.globalnest.be.petition.domain.type.PetitionType;
+
+
 public record PetitionSortRequest(
-
+    Boolean includeExpired,       // 만료된 petition 포함 여부
+    PetitionType petitionType,    // 카테고리 별 정렬을 위한 petitionType
+    Boolean sortByAgreementCount // 동의자 수로 정렬할지 여부
 ) {
-}
 
+}
