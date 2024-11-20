@@ -7,7 +7,6 @@ import com.globalnest.be.post.application.type.SortType;
 import com.globalnest.be.post.domain.Post;
 import com.globalnest.be.post.domain.PostLike;
 import com.globalnest.be.post.domain.PostTag;
-import com.globalnest.be.post.domain.type.Tag;
 import com.globalnest.be.post.dto.request.PostUploadRequest;
 import com.globalnest.be.post.dto.response.PostDetailResponse;
 import com.globalnest.be.post.exception.PostNotFoundException;
@@ -53,7 +52,7 @@ public class PostService {
 
         List<PostResponse> postResponseList = postRepoResponseList.stream()
                 .map(postRepoResponse -> {
-                    List<Tag> list = postTagRepository.findAllByPostId(postRepoResponse.postId())
+                    List<String> list = postTagRepository.findAllByPostId(postRepoResponse.postId())
                             .stream()
                             .map(PostTag::getTag)
                             .toList();
@@ -70,7 +69,7 @@ public class PostService {
     ) {
         PostRepoResponse postRepoResponse = postRepository.findPostDetailResponse(userId, postId);
 
-        List<Tag> list = postTagRepository.findAllByPostId(postId)
+        List<String> list = postTagRepository.findAllByPostId(postId)
                 .stream()
                 .map(PostTag::getTag)
                 .toList();
@@ -103,7 +102,7 @@ public class PostService {
 
         request.tags()
                 .forEach(tag -> {
-                    PostTag postTag = tag.toPostTag(savedPost);
+                    PostTag postTag = PostTag.of(savedPost, tag);
                     postTagRepository.save(postTag);
                 });
     }
@@ -128,9 +127,9 @@ public class PostService {
                         });
 
         if (isCreated.get()) {
-            return "북마크 저장 성공";
+            return "좋아요 저장 성공";
         } else {
-            return "북마크 삭제 성공";
+            return "좋아요 삭제 성공";
         }
     }
 
