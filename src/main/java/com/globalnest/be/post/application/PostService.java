@@ -90,11 +90,15 @@ public class PostService {
         if (file != null) {
             imageUrl = awsStorageService.uploadFile(file, "post");
         }
-
         User user = userService.findUserById(userId);
 
         Post newPost = request.toEntity(user, imageUrl);
+        Post savedPost = postRepository.save(newPost);
 
-        postRepository.save(newPost);
+        request.tags()
+                .forEach(tag -> {
+                    PostTag postTag = tag.toPostTag(savedPost);
+                    postTagRepository.save(postTag);
+                });
     }
 }
