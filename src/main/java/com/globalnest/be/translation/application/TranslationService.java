@@ -22,7 +22,7 @@ public class TranslationService {
     private final TranslationClient translationClient;
     private final ObjectMapper objectMapper;
 
-    @Value("${gpt.gpt-key}")
+    @Value("${gpt.api-key}")
     private String KEY;
 
     // 메서드에서 어떤 형태의 데이터를 처리하고 GPT API 호출
