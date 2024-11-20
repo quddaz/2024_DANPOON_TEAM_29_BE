@@ -3,7 +3,6 @@ package com.globalnest.be.post.repository.init;
 import com.globalnest.be.global.util.DummyDataInit;
 import com.globalnest.be.post.domain.Post;
 import com.globalnest.be.post.domain.PostTag;
-import com.globalnest.be.post.domain.type.Tag;
 import com.globalnest.be.post.repository.PostRepository;
 import com.globalnest.be.post.repository.PostTagRepository;
 import java.util.ArrayList;
@@ -34,11 +33,11 @@ public class PostTagInitializer implements ApplicationRunner {
 
             PostTag postTag1 = PostTag.builder()
                     .post(DUMMY_POST1)
-                    .tag(Tag.ANGRY)
+                    .tag("ANGRY")
                     .build();
             PostTag postTag2 = PostTag.builder()
                     .post(DUMMY_POST1)
-                    .tag(Tag.HAPPY)
+                    .tag("HAPPY")
                     .build();
 
             postTagList.add(postTag1);
