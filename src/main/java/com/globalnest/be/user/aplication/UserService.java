@@ -1,4 +1,4 @@
-package com.globalnest.be.user.service;
+package com.globalnest.be.user.aplication;
 
 import com.globalnest.be.user.domain.Subscribe;
 import com.globalnest.be.user.domain.User;

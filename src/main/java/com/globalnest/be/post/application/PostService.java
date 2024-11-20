@@ -18,7 +18,7 @@ import com.globalnest.be.post.dto.response.PostResponseList;
 import com.globalnest.be.post.repository.PostRepository;
 import com.globalnest.be.post.repository.PostTagRepository;
 import com.globalnest.be.user.domain.User;
-import com.globalnest.be.user.service.UserService;
+import com.globalnest.be.user.aplication.UserService;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.RequiredArgsConstructor;
