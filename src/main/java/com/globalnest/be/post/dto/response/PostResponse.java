@@ -1,5 +1,6 @@
 package com.globalnest.be.post.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.LocalDateTime;
 import lombok.Builder;
 
@@ -12,4 +13,9 @@ public record PostResponse(
         Integer likeCount,
         String postImageUrl
 ) {
+
+    @JsonProperty("postImageUrl")
+    public String getPostImageUrl() {
+        return postImageUrl == null ? "" : postImageUrl;
+    }
 }

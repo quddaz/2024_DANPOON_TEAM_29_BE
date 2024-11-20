@@ -25,11 +25,12 @@ public class PostController {
     private final PostService postService;
 
     @Operation(summary = "게시글 리스트 조회", description = "게시글 리스트를 조회합니다<br>"
-            + "페이지 번호, 페이지 크기, 정렬 방식을 입력받아 게시글 리스트를 반환합니다")
+            + "페이지 번호, 페이지 크기, 정렬 방식을 입력받아 게시글 리스트를 반환합니다<br>"
+            + "page는 0번부터 시작")
     @GetMapping
     public ResponseEntity<ResponseTemplate<?>> getNearbyLecturePlaces(
-            @RequestParam int page,
-            @RequestParam int size,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size,
             @RequestParam SortType sortType
     ) {
         PostResponseList postResponseList = postService.findPostResponseList(page, size, sortType);
