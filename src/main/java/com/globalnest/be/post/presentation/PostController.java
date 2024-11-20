@@ -4,6 +4,7 @@ import com.globalnest.be.global.dto.ResponseTemplate;
 import com.globalnest.be.oauth.dto.CustomOAuth2User;
 import com.globalnest.be.post.application.PostService;
 import com.globalnest.be.post.application.type.SortType;
+import com.globalnest.be.post.dto.request.PostUploadRequest;
 import com.globalnest.be.post.dto.response.PostDetailResponse;
 import com.globalnest.be.post.dto.response.PostResponseList;
 import io.swagger.v3.oas.annotations.Operation;
@@ -11,13 +12,17 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @Tag(name = "Post", description = "게시글 관련 API")
 @Slf4j
@@ -60,5 +65,20 @@ public class PostController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ResponseTemplate.from(postDetailResponse));
+    }
+
+    @Operation(summary = "게시글 업로드", description = "게시글을 업로드합니다<br>"
+            + "Tag: SAD, HAPPY, LONELY, ANGRY, SATISFIED, UNSATISFIED (아직 확정 X)")
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
+    public ResponseEntity<ResponseTemplate<?>> uploadPost(
+            @RequestPart PostUploadRequest postUploadRequest,
+            @RequestPart(required = false) MultipartFile file,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ) {
+        postService.uploadPost(user.getUserId(), postUploadRequest, file);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseTemplate.EMPTY_RESPONSE);
     }
 }
