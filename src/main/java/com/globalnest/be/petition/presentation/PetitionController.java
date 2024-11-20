@@ -45,7 +45,7 @@ public class PetitionController {
         + "페이지 번호, 페이지 크기, 정렬 방식을 입력받아 게시글 리스트를 반환합니다<br>"
         + "page는 0번부터 시작")
     @GetMapping
-    public ResponseEntity<ResponseTemplate<?>> getNearbyLecturePlaces(
+    public ResponseEntity<ResponseTemplate<?>> getPetitionMainPage(
         @RequestParam(defaultValue = "0") int page,
         @RequestParam(defaultValue = "8") int size,
         @ModelAttribute PetitionSortRequest petitionSortRequest

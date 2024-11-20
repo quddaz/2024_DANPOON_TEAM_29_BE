@@ -8,12 +8,6 @@ import com.globalnest.be.petition.dto.response.PetitionResponse;
 import com.globalnest.be.petition.dto.response.PetitionResponseList;
 import com.globalnest.be.petition.repository.AgreementRepository;
 import com.globalnest.be.petition.repository.PetitionRepository;
-import com.globalnest.be.post.application.type.SortType;
-import com.globalnest.be.post.domain.PostTag;
-import com.globalnest.be.post.domain.type.Tag;
-import com.globalnest.be.post.dto.response.PostResponse;
-import com.globalnest.be.post.dto.response.PostResponseList;
-import com.globalnest.be.post.repository.dto.PostRepoResponse;
 import com.globalnest.be.user.domain.User;
 import com.globalnest.be.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +39,7 @@ public class PetitionService {
 
         return PetitionResponseList.of(hasNext, page, size, petitionSortRequest, petitionResponseList);
     }
-    
+
     @Transactional
     public void uploadPetition(Long userId, PetitionUploadRequest petitionUploadRequest){
         User user = userService.findUserById(userId);
