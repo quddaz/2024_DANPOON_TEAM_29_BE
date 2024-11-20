@@ -2,20 +2,26 @@ package com.globalnest.be.post.application;
 
 import com.globalnest.be.comment.dto.response.CommentResponse;
 import com.globalnest.be.comment.repository.CommentRepository;
+import com.globalnest.be.global.application.AWSStorageService;
 import com.globalnest.be.post.application.type.SortType;
+import com.globalnest.be.post.domain.Post;
 import com.globalnest.be.post.domain.PostTag;
 import com.globalnest.be.post.domain.type.Tag;
+import com.globalnest.be.post.dto.request.PostUploadRequest;
 import com.globalnest.be.post.dto.response.PostDetailResponse;
 import com.globalnest.be.post.repository.dto.PostRepoResponse;
 import com.globalnest.be.post.dto.response.PostResponse;
 import com.globalnest.be.post.dto.response.PostResponseList;
 import com.globalnest.be.post.repository.PostRepository;
 import com.globalnest.be.post.repository.PostTagRepository;
+import com.globalnest.be.user.domain.User;
+import com.globalnest.be.user.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RequiredArgsConstructor
@@ -26,6 +32,8 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostTagRepository postTagRepository;
     private final CommentRepository commentRepository;
+    private final UserService userService;
+    private final AWSStorageService awsStorageService;
 
     public PostResponseList findPostResponseList(Long userId, int page, int size, SortType sortType) {
         List<PostRepoResponse> postRepoResponseList = postRepository.findPostResponseList(userId, page, size, sortType);
@@ -74,5 +82,19 @@ public class PostService {
         }
 
         return PostDetailResponse.of(hasNext, size, postResponse, commentResponseList);
+    }
+
+    @Transactional
+    public void uploadPost(Long userId, PostUploadRequest request, MultipartFile file) {
+        String imageUrl = "";
+        if (file != null) {
+            imageUrl = awsStorageService.uploadFile(file, "post");
+        }
+
+        User user = userService.findUserById(userId);
+
+        Post newPost = request.toEntity(user, imageUrl);
+
+        postRepository.save(newPost);
     }
 }

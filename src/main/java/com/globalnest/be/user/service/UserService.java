@@ -32,4 +32,9 @@ public class UserService {
 
         userRepository.save(user);
     }
+
+    public User findUserById(Long id){
+        return userRepository.findById(id)
+            .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
+    }
 }
