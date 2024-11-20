@@ -16,16 +16,16 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "email", length = 25)
+    @Column(name = "email", nullable = false, length = 25)
     private String email;
 
-    @Column(name = "name", length = 20)
+    @Column(name = "name", nullable = false, length = 20)
     private String name;
 
-    @Column(name = "nick_name", length = 20)
+    @Column(name = "nick_name", nullable = false, length = 20)
     private String nickName;
 
     @Enumerated(EnumType.STRING)
@@ -33,24 +33,24 @@ public class User {
     private Language language;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "oauth_type", length = 20)
+    @Column(name = "oauth_type", nullable = false, length = 20)
     private OAuthType oAuthType;
 
-    @Column(name = "social_id", length = 100)
+    @Column(name = "social_id", nullable = false, length = 100)
     private String socialId;
 
     @Enumerated(EnumType.STRING)
     @Column(name = "part", length = 20)
     private Part part;
 
-    @Column(name = "profile_image", length = 200)
-    private String profile_image;
+    @Column(name = "profile_image", nullable = false, length = 200)
+    private String profileImage;
 
-    @Column(name = "is_alarm_allowed")
-    private Boolean is_alarm_allowed;
+    @Column(name = "is_alarm_allowed", nullable = false)
+    private Boolean isAlarmAllowed;
 
-    @Column(name = "role")
     @Enumerated(EnumType.STRING)
+    @Column(name = "role", nullable = false)
     private Role role;
 
     @Enumerated(EnumType.STRING)
@@ -59,7 +59,7 @@ public class User {
 
     @Builder
     public User(String email, String name, String nickName, OAuthType oAuthType, String socialId, Role role,
-                String profile_image, Language language, Part part, Boolean is_alarm_allowed,
+                String profileImage, Language language, Part part, Boolean isAlarmAllowed,
                 AgeRange ageRange) {
         this.email = email;
         this.name = name;
@@ -67,17 +67,20 @@ public class User {
         this.oAuthType = oAuthType;
         this.socialId = socialId;
         this.role = role;
-        this.profile_image = profile_image;
+        this.profileImage = profileImage;
         this.language = language;
         this.part = part;
-        this.is_alarm_allowed = is_alarm_allowed;
+        this.isAlarmAllowed = isAlarmAllowed;
         this.ageRange = ageRange;
     }
 
     public String getRoleKey() {
         return this.role.getKey();
     }
-    public List<String> getRoles(){return List.of(this.role.name());}
+
+    public List<String> getRoles() {
+        return List.of(this.role.name());
+    }
 
 
 }
