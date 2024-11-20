@@ -24,6 +24,8 @@ public class AuthenticationUtil {
             .name(user.getName())
             .nickname(user.getNickName())
             .roles(Collections.singletonList(user.getRoleKey()))
+            .part(user.getPart())
+            .language(user.getLanguage())
             .build();
 
         // ContextHolder 에 Authentication 정보 저장
