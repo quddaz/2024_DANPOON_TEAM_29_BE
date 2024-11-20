@@ -9,6 +9,8 @@ import com.globalnest.be.post.domain.PostTag;
 import com.globalnest.be.post.domain.type.Tag;
 import com.globalnest.be.post.dto.request.PostUploadRequest;
 import com.globalnest.be.post.dto.response.PostDetailResponse;
+import com.globalnest.be.post.exception.PostNotFoundException;
+import com.globalnest.be.post.exception.errorCode.PostErrorCode;
 import com.globalnest.be.post.repository.dto.PostRepoResponse;
 import com.globalnest.be.post.dto.response.PostResponse;
 import com.globalnest.be.post.dto.response.PostResponseList;
@@ -100,5 +102,10 @@ public class PostService {
                     PostTag postTag = tag.toPostTag(savedPost);
                     postTagRepository.save(postTag);
                 });
+    }
+
+    public Post findPostById(Long postId) {
+        return postRepository.findById(postId)
+                .orElseThrow(() -> new PostNotFoundException(PostErrorCode.POST_NOT_FOUND));
     }
 }
