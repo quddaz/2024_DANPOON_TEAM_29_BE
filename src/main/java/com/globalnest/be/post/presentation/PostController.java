@@ -45,7 +45,8 @@ public class PostController {
                 .body(ResponseTemplate.from(postResponseList));
     }
 
-    @Operation(summary = "게시글 상세 조회", description = "게시글 상세 정보를 조회합니다. 마지막 확인 댓글 ID를 기준으로 댓글을 조회합니다")
+    @Operation(summary = "게시글 상세 조회", description = "게시글 상세 정보를 조회합니다. 마지막 확인 댓글 ID를 기준으로 댓글을 조회합니다<br>"
+            + "이후 댓글은 /comments/{postId} API를 통해 추가 조회합니다")
     @GetMapping("/{postId}")
     public ResponseEntity<ResponseTemplate<?>> getPostDetail(
             @PathVariable Long postId,
