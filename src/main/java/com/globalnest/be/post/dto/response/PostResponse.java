@@ -2,6 +2,7 @@ package com.globalnest.be.post.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.globalnest.be.post.domain.type.Tag;
+import com.globalnest.be.post.repository.dto.PostRepoResponse;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Builder;
@@ -14,6 +15,7 @@ public record PostResponse(
         String content,
         Integer likeCount,
         String postImageUrl,
+        Boolean isLike,
         List<Tag> tags
 ) {
 
@@ -27,6 +29,7 @@ public record PostResponse(
                 .content(response.content())
                 .likeCount(response.likeCount())
                 .postImageUrl(response.postImageUrl())
+                .isLike(response.isLike())
                 .tags(tags)
                 .build();
     }

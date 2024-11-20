@@ -31,9 +31,10 @@ public class PostController {
     public ResponseEntity<ResponseTemplate<?>> getNearbyLecturePlaces(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
-            @RequestParam SortType sortType
+            @RequestParam SortType sortType,
+            @RequestParam Long userId
     ) {
-        PostResponseList postResponseList = postService.findPostResponseList(page, size, sortType);
+        PostResponseList postResponseList = postService.findPostResponseList(userId, page, size, sortType);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

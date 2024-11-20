@@ -3,7 +3,7 @@ package com.globalnest.be.post.application;
 import com.globalnest.be.post.application.type.SortType;
 import com.globalnest.be.post.domain.PostTag;
 import com.globalnest.be.post.domain.type.Tag;
-import com.globalnest.be.post.dto.response.PostRepoResponse;
+import com.globalnest.be.post.repository.dto.PostRepoResponse;
 import com.globalnest.be.post.dto.response.PostResponse;
 import com.globalnest.be.post.dto.response.PostResponseList;
 import com.globalnest.be.post.repository.PostRepository;
@@ -23,8 +23,8 @@ public class PostService {
     private final PostRepository postRepository;
     private final PostTagRepository postTagRepository;
 
-    public PostResponseList findPostResponseList(int page, int size, SortType sortType) {
-        List<PostRepoResponse> postRepoResponseList = postRepository.findPostResponseList(page, size, sortType);
+    public PostResponseList findPostResponseList(Long userId, int page, int size, SortType sortType) {
+        List<PostRepoResponse> postRepoResponseList = postRepository.findPostResponseList(userId, page, size, sortType);
 
         boolean hasNext = postRepoResponseList.size() == size + 1;
 
