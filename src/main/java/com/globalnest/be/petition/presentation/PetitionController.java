@@ -3,13 +3,10 @@ package com.globalnest.be.petition.presentation;
 import com.globalnest.be.global.dto.ResponseTemplate;
 import com.globalnest.be.oauth.dto.CustomOAuth2User;
 import com.globalnest.be.petition.application.PetitionService;
-import com.globalnest.be.petition.domain.Petition;
 import com.globalnest.be.petition.dto.request.PetitionSortRequest;
 import com.globalnest.be.petition.dto.request.PetitionUploadRequest;
+import com.globalnest.be.petition.dto.response.PetitionDetailResponse;
 import com.globalnest.be.petition.dto.response.PetitionResponseList;
-import com.globalnest.be.post.application.type.SortType;
-import com.globalnest.be.post.dto.request.PostUploadRequest;
-import com.globalnest.be.post.dto.response.PostResponseList;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -56,4 +53,27 @@ public class PetitionController {
             .body(ResponseTemplate.from(petitionResponseList));
     }
 
+    @Operation(summary = "청원 상세 페이지 조회", description = "청원 상세 페이지를 조회합니다")
+    @GetMapping("/{petitionId}")
+    public ResponseEntity<ResponseTemplate<?>> getPetitionDetail(
+        @PathVariable Long petitionId,
+        @AuthenticationPrincipal CustomOAuth2User user
+    ){
+        PetitionDetailResponse petitionDetailResponse = petitionService.findPetitionDetail(petitionId, user.getUserId());
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(ResponseTemplate.from(petitionDetailResponse ));
+    }
+
+    @Operation(summary = "청원 서명 로직", description = "청원 상세 페이지에서 서명을 합니다.")
+    @GetMapping("/agreement/{petitionId}")
+    public ResponseEntity<ResponseTemplate<?>> markingAgreement(
+        @PathVariable Long petitionId,
+        @AuthenticationPrincipal CustomOAuth2User user
+    ){
+        petitionService.markingAgreement(petitionId, user.getUserId());
+        return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(ResponseTemplate.EMPTY_RESPONSE);
+    }
 }

@@ -3,10 +3,13 @@ package com.globalnest.be.petition.repository;
 import com.globalnest.be.petition.domain.QAgreement;
 import com.globalnest.be.petition.domain.QPetition;
 import com.globalnest.be.petition.dto.request.PetitionSortRequest;
+import com.globalnest.be.petition.dto.response.PetitionDetailResponse;
 import com.globalnest.be.petition.dto.response.PetitionResponse;
+import com.globalnest.be.user.domain.QUser;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
+import com.querydsl.jpa.JPAExpressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
@@ -24,6 +27,40 @@ public class PetitionRepositoryImpl implements PetitionRepositoryCustom {
     private final JPAQueryFactory queryFactory;
 
     @Override
+    public PetitionDetailResponse getPetitionDetail(Long petitionId, Long userId) {
+        QPetition petition = QPetition.petition;
+        QAgreement agreement = QAgreement.agreement;
+        QUser user = QUser.user;
+
+
+        // Petition을 조회하는 쿼리
+        return queryFactory
+            .select(Projections.constructor(
+                PetitionDetailResponse.class,
+                petition.title,
+                petition.purpose,
+                petition.content,
+                petition.petitionType.stringValue(),
+                user.name,
+                agreement.count().intValue(),
+                petition.createdDate,
+                petition.agreementDeadline,
+                // 서브쿼리로 Agreement 존재 여부 확인
+                JPAExpressions.selectOne()
+                    .from(agreement)
+                    .where(agreement.petition.id.eq(petition.id)
+                        .and(agreement.user.id.eq(userId)))
+                    .exists()
+            ))
+            .from(petition)
+            .leftJoin(user).on(user.id.eq(petition.user.id)) // Petition의 user와 User 엔티티 조인
+            .leftJoin(agreement).on(agreement.petition.id.eq(petition.id)) // Petition과 Agreement를 조인
+            .groupBy(petition.id, user.id) // Petition과 User로 그룹화
+            .where(petition.id.eq(petitionId))
+            .fetchOne();
+    }
+
+    @Override
     public List<PetitionResponse> getPetitionResponses(PetitionSortRequest petitionSortRequest, int page, int size) {
         QPetition petition = QPetition.petition;
         QAgreement agreement = QAgreement.agreement;
@@ -35,7 +72,7 @@ public class PetitionRepositoryImpl implements PetitionRepositoryCustom {
             .select(Projections.constructor(
                 PetitionResponse.class,
                 petition.title,
-                petition.petitionType,
+                petition.petitionType.stringValue(),
                 petition.createdDate,
                 petition.agreementDeadline,
                 agreement.count().intValue() // Agreement 개수

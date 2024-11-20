@@ -6,7 +6,7 @@ import java.time.LocalDate;
 
 public record PetitionResponse(
     String title,
-    PetitionType petitionType,
+    String petitionType,
     LocalDate createdDate,
     LocalDate agreementDeadline,
     Integer agreementCount

@@ -2,8 +2,6 @@ package com.globalnest.be.petition.dto.request;
 
 import com.globalnest.be.petition.domain.Petition;
 import com.globalnest.be.petition.domain.type.PetitionType;
-import com.globalnest.be.post.domain.Post;
-import com.globalnest.be.post.domain.type.Tag;
 import com.globalnest.be.user.domain.User;
 import jakarta.validation.constraints.NotNull;
 

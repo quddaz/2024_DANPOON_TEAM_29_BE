@@ -4,8 +4,13 @@ import com.globalnest.be.petition.domain.Agreement;
 import com.globalnest.be.petition.domain.Petition;
 import com.globalnest.be.petition.dto.request.PetitionSortRequest;
 import com.globalnest.be.petition.dto.request.PetitionUploadRequest;
+import com.globalnest.be.petition.dto.response.PetitionDetailResponse;
 import com.globalnest.be.petition.dto.response.PetitionResponse;
 import com.globalnest.be.petition.dto.response.PetitionResponseList;
+import com.globalnest.be.petition.exception.AgreementDuplicateException;
+import com.globalnest.be.petition.exception.PetitionNotFoundException;
+import com.globalnest.be.petition.exception.errorcode.AgreementErrorCode;
+import com.globalnest.be.petition.exception.errorcode.PetitionErrorCode;
 import com.globalnest.be.petition.repository.AgreementRepository;
 import com.globalnest.be.petition.repository.PetitionRepository;
 import com.globalnest.be.user.domain.User;
@@ -32,12 +37,15 @@ public class PetitionService {
 
         boolean hasNext = petitionResponseList.size() == size + 1;
 
-        // 마지막 원소를 제외한 서브 리스트 생성
         if (hasNext) {
             petitionResponseList = petitionResponseList.subList(0, petitionResponseList.size() - 1);
         }
 
         return PetitionResponseList.of(hasNext, page, size, petitionSortRequest, petitionResponseList);
+    }
+
+    public PetitionDetailResponse findPetitionDetail(Long petitionId, Long userId){
+        return petitionRepository.getPetitionDetail(petitionId,userId);
     }
 
     @Transactional
@@ -52,5 +60,26 @@ public class PetitionService {
             .petition(newPetition)
             .build();
         agreementRepository.save(agreement);
+    }
+
+    @Transactional
+    public void markingAgreement(Long petitionId, Long userId){
+        Petition petition = findById(petitionId);
+        User user = userService.findUserById(userId);
+
+        if(agreementRepository.existsByPetitionAndUser(petition, user)){
+            throw new AgreementDuplicateException(AgreementErrorCode.AGREEMENT_DUPLICATE);
+        }
+
+        Agreement agreement = Agreement.builder()
+            .user(user)
+            .petition(petition)
+            .build();
+        agreementRepository.save(agreement);
+    }
+
+    public Petition findById(Long petitionId){
+        return petitionRepository.findById(petitionId)
+            .orElseThrow(()-> new PetitionNotFoundException(PetitionErrorCode.PETITION_NOT_FOUND));
     }
 }

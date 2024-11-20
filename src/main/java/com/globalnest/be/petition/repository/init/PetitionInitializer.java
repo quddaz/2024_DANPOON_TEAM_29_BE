@@ -4,7 +4,6 @@ import com.globalnest.be.global.util.DummyDataInit;
 import com.globalnest.be.petition.domain.Petition;
 import com.globalnest.be.petition.domain.type.PetitionType;
 import com.globalnest.be.petition.repository.PetitionRepository;
-import com.globalnest.be.post.domain.Post;
 import com.globalnest.be.user.domain.User;
 import com.globalnest.be.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

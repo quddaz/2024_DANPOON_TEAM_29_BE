@@ -8,7 +8,7 @@ public record PetitionDetailResponse(
     String title,
     String purpose,
     String content,
-    PetitionType petitionType,
+    String petitionType,
     String name,
     Integer agreementCount,
     LocalDate createDate,
