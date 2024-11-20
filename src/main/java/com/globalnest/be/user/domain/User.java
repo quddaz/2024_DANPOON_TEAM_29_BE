@@ -29,7 +29,7 @@ public class User {
     private String nickName;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "language", length = 20)
+    @Column(name = "language", nullable = false, length = 20)
     private Language language;
 
     @Enumerated(EnumType.STRING)
