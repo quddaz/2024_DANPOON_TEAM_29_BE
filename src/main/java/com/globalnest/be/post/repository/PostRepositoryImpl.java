@@ -58,4 +58,30 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
             case LIKE_DESC -> post.postLikeList.size().desc();
         };
     }
+
+    @Override
+    public PostRepoResponse findPostDetailResponse(Long userId, Long postId) {
+        return jpaQueryFactory
+                .select(Projections.constructor(PostRepoResponse.class,
+                        Projections.constructor(AuthorSimpleInfoResponse.class,
+                                post.user.id,
+                                post.user.nickName,
+                                post.user.profileImage
+                        ), // 작성자 정보
+                        post.createdDate, // 생성 날짜
+                        post.id, // 포스트 ID
+                        post.content, // 포스트 내용
+                        post.postLikeList.size(), // 좋아요 수
+                        post.postImageUrl, // 포스트 이미지 URL
+                        // 유저가 해당 포스트를 좋아요 했는지 확인하는 서브쿼리
+                        JPAExpressions.selectOne() // 서브쿼리
+                                .from(postLike)
+                                .where(postLike.post.eq(post)
+                                        .and(postLike.user.id.eq(userId))) // 조건 추가
+                                .exists() // 존재 여부 확인
+                ))
+                .from(post)
+                .where(post.id.eq(postId))
+                .fetchOne();
+    }
 }

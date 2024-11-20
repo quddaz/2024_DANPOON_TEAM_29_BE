@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.annotation.Order;
@@ -18,6 +19,11 @@ import org.springframework.core.annotation.Order;
 @Order(2)
 @DummyDataInit
 public class PostInitializer implements ApplicationRunner {
+
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
+
+    private static final String DUMMY_PROFILE_IMAGE_URL = "/profile/ic_profile.svg";
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
@@ -37,6 +43,7 @@ public class PostInitializer implements ApplicationRunner {
                     .user(DUMMY_ADMIN)
                     .title("제목1")
                     .content("내용1")
+                    .postImageUrl("https://" + bucket + ".s3.ap-northeast-2.amazonaws.com" + DUMMY_PROFILE_IMAGE_URL)
                     .build();
             Post DUMMY_POST2 = Post.builder()
                     .user(DUMMY_USER1)
