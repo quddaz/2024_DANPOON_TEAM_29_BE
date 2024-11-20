@@ -1,11 +1,8 @@
 package com.globalnest.be.post.domain;
 
 import com.globalnest.be.global.domain.BaseTimeEntity;
-import com.globalnest.be.post.domain.type.Tag;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -33,13 +30,19 @@ public class PostTag extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Post post;
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "tag", nullable = false)
-    private Tag tag;
+    private String tag;
 
     @Builder
-    public PostTag(Post post, Tag tag) {
+    public PostTag(Post post, String tag) {
         this.post = post;
         this.tag = tag;
+    }
+
+    public static PostTag of(Post post, String tag) {
+        return PostTag.builder()
+                .post(post)
+                .tag(tag)
+                .build();
     }
 }

@@ -1,7 +1,6 @@
 package com.globalnest.be.post.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.globalnest.be.post.domain.type.Tag;
 import com.globalnest.be.post.repository.dto.PostRepoResponse;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -16,11 +15,11 @@ public record PostResponse(
         Integer likeCount,
         String postImageUrl,
         Boolean isLike,
-        List<Tag> tags
+        List<String> tags
 ) {
 
     public static PostResponse of(
-            PostRepoResponse response, List<Tag> tags
+            PostRepoResponse response, List<String> tags
     ) {
         return PostResponse.builder()
                 .authorInfo(response.authorInfo())

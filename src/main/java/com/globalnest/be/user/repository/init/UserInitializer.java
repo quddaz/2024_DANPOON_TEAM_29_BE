@@ -72,7 +72,7 @@ public class UserInitializer implements ApplicationRunner {
                     .language(Language.KOREAN)
                     .oAuthType(OAuthType.KAKAO)
                     .socialId("1234567890123")
-                    .part(Part.DESIGN)
+                    .part(Part.ACCOUNTING)
                     .profileImage("https://" + bucket + ".s3.ap-northeast-2.amazonaws.com" + DUMMY_PROFILE_IMAGE_URL)
                     .isAlarmAllowed(true)
                     .role(Role.MEMBER)

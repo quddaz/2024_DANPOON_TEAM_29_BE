@@ -68,7 +68,7 @@ public class PostController {
     }
 
     @Operation(summary = "게시글 업로드", description = "게시글을 업로드합니다<br>"
-            + "Tag: SAD, HAPPY, LONELY, ANGRY, SATISFIED, UNSATISFIED (아직 확정 X)")
+            + "Tag는 자율로 입력")
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<ResponseTemplate<?>> uploadPost(
             @RequestPart PostUploadRequest postUploadRequest,
@@ -80,5 +80,18 @@ public class PostController {
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ResponseTemplate.EMPTY_RESPONSE);
+    }
+
+    @Operation(summary = "게시글 좋아요 저장/삭제", description = "게시글 좋아요 저장/삭제")
+    @GetMapping("/like/{postId}")
+    public ResponseEntity<ResponseTemplate<?>> saveBookMark(
+            @PathVariable Long postId,
+            @AuthenticationPrincipal CustomOAuth2User user
+    ) {
+        String result = postService.likePost(user.getUserId(), postId);
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ResponseTemplate.from(result));
     }
 }
