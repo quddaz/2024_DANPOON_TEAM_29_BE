@@ -4,7 +4,7 @@ import static com.globalnest.be.post.domain.QPost.post;
 
 import com.globalnest.be.post.application.type.SortType;
 import com.globalnest.be.post.dto.response.AuthorSimpleInfoResponse;
-import com.globalnest.be.post.dto.response.PostResponse;
+import com.globalnest.be.post.dto.response.PostRepoResponse;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -19,9 +19,9 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<PostResponse> findPostResponseList(int page, int size, SortType sortType) {
+    public List<PostRepoResponse> findPostResponseList(int page, int size, SortType sortType) {
         return jpaQueryFactory
-                .select(Projections.constructor(PostResponse.class,
+                .select(Projections.constructor(PostRepoResponse.class,
                         Projections.constructor(AuthorSimpleInfoResponse.class,
                                 post.user.id,
                                 post.user.nickName,
