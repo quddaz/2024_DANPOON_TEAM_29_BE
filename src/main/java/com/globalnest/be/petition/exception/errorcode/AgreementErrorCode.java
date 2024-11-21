@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 @RequiredArgsConstructor
 public enum AgreementErrorCode implements ErrorCode {
-    AGREEMENT_DUPLICATE(HttpStatus.BAD_REQUEST, "Duplicate agreement submission")
+    AGREEMENT_DUPLICATE(HttpStatus.BAD_REQUEST, "Duplicate agreement submission"),
+    PETITION_EXPIRED(HttpStatus.BAD_REQUEST, "Petition Expired")
     ;
 
     private final HttpStatus httpStatus;
