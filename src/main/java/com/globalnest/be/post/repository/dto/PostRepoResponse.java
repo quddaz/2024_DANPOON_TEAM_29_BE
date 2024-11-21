@@ -10,6 +10,7 @@ public record PostRepoResponse(
         AuthorSimpleInfoResponse authorInfo,
         LocalDateTime createdAt,
         Long postId,
+        String title,
         String content,
         Integer likeCount,
         String postImageUrl,
