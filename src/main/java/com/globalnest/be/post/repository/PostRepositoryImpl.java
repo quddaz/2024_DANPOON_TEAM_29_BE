@@ -31,6 +31,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         ), // 작성자 정보
                         post.createdDate, // 생성 날짜
                         post.id, // 포스트 ID
+                        post.title,
                         post.content, // 포스트 내용
                         post.postLikeList.size(), // 좋아요 수
                         post.postImageUrl, // 포스트 이미지 URL
@@ -70,6 +71,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                         ), // 작성자 정보
                         post.createdDate, // 생성 날짜
                         post.id, // 포스트 ID
+                        post.title,
                         post.content, // 포스트 내용
                         post.postLikeList.size(), // 좋아요 수
                         post.postImageUrl, // 포스트 이미지 URL

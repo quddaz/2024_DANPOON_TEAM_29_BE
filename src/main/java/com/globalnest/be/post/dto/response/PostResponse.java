@@ -11,6 +11,7 @@ public record PostResponse(
         AuthorSimpleInfoResponse authorInfo,
         LocalDateTime createdAt,
         Long postId,
+        String title,
         String content,
         Integer likeCount,
         String postImageUrl,
@@ -25,6 +26,7 @@ public record PostResponse(
                 .authorInfo(response.authorInfo())
                 .createdAt(response.createdAt())
                 .postId(response.postId())
+                .title(response.title())
                 .content(response.content())
                 .likeCount(response.likeCount())
                 .postImageUrl(response.postImageUrl())
