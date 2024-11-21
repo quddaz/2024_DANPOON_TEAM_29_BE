@@ -21,6 +21,7 @@ public record ChatRequest(
     4. "name", "%nickname%"은 번역 대상이 아닙니다. 이름은 각자의 나라를 대표하기 때문입니다.
     5. 응답은 제공된 데이터 구조와 정확히 일치해야 하며, 언어는 번역을 위한 기준이 되어야 합니다.
     6. 날짜의 경우 "yyyy-mm-dd"로 들어오면 "yyyy-mm-dd"로 포멧하세요. 또한 yyyy-MM-dd HH:mm:ss"로 들어오면 yyyy-MM-dd HH:mm:ss로 포멧하세요 배열로 리턴하지 말고 문자열 형태로 리턴해주세요.
+    7. 정렬조건을 제외한 petitionType도 꼭 사용자 언어에 맞게 번역해주세요.
   "steps": [
     {
       "step": "번역",

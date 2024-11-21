@@ -8,6 +8,7 @@ import com.globalnest.be.petition.dto.response.PetitionDetailResponse;
 import com.globalnest.be.petition.dto.response.PetitionResponse;
 import com.globalnest.be.petition.dto.response.PetitionResponseList;
 import com.globalnest.be.petition.exception.AgreementDuplicateException;
+import com.globalnest.be.petition.exception.PetitionExpiredException;
 import com.globalnest.be.petition.exception.PetitionNotFoundException;
 import com.globalnest.be.petition.exception.errorcode.AgreementErrorCode;
 import com.globalnest.be.petition.exception.errorcode.PetitionErrorCode;
@@ -20,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Slf4j
@@ -67,6 +69,12 @@ public class PetitionService {
         Petition petition = findById(petitionId);
         User user = userService.findUserById(userId);
 
+        // 청원 날짜가 지나면 Agreement를 할 수 없도록 예외 처리
+        if (petition.getAgreementDeadline().isBefore(LocalDate.now())) {
+            throw new PetitionExpiredException(AgreementErrorCode.PETITION_EXPIRED);
+        }
+
+        // 이미 해당 사용자가 동의한 경우 예외 처리
         if(agreementRepository.existsByPetitionAndUser(petition, user)){
             throw new AgreementDuplicateException(AgreementErrorCode.AGREEMENT_DUPLICATE);
         }
