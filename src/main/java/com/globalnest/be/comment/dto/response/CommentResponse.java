@@ -1,5 +1,6 @@
 package com.globalnest.be.comment.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 
 public record CommentResponse(
@@ -8,6 +9,7 @@ public record CommentResponse(
         String nickname,
         Long commentId,
         String content,
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         LocalDateTime createdAt
 ) {
 }
