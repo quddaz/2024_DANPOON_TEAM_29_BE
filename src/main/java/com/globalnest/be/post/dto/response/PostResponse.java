@@ -1,5 +1,6 @@
 package com.globalnest.be.post.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.globalnest.be.post.repository.dto.PostRepoResponse;
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ import lombok.Builder;
 @Builder
 public record PostResponse(
         AuthorSimpleInfoResponse authorInfo,
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
         LocalDateTime createdAt,
         Long postId,
         String title,
