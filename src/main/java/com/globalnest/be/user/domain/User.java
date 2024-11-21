@@ -73,6 +73,17 @@ public class User {
         this.isAlarmAllowed = isAlarmAllowed;
         this.ageRange = ageRange;
     }
+    public void updateProfile(String name, String nickname, Part part, Language language,
+                              AgeRange ageRange, String profileImage) {
+        this.name = name;
+        this.nickName = nickname;
+        this.part = part;
+        this.language = language;
+        this.ageRange = ageRange;
+        if (profileImage != null && !profileImage.isBlank()) {
+            this.profileImage = profileImage;
+        }
+    }
 
     public String getRoleKey() {
         return this.role.getKey();

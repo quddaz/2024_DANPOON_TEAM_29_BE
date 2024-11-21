@@ -1,5 +1,6 @@
-package com.globalnest.be.user.aplication;
+package com.globalnest.be.user.application;
 
+import com.globalnest.be.global.application.AWSStorageService;
 import com.globalnest.be.user.domain.Subscribe;
 import com.globalnest.be.user.domain.User;
 import com.globalnest.be.user.dto.request.FirstLoginRequest;
@@ -14,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 
 @Service
@@ -23,19 +25,26 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final SubscribeRepository subscribeRepository;
-
+    private final AWSStorageService awsStorageService;
     /**
      * 첫 로그인 시 정보를 받아오는 메소드
      */
-    public void registerUser(FirstLoginRequest request, String file_url, Long id) {
+    public void registerUser(FirstLoginRequest request, Long id, MultipartFile file) {
+        // 프로필 이미지 업로드 처리
+        String imageUrl = file != null ? awsStorageService.uploadFile(file, "user") : "";
+
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
-        user.setName(request.name());
-        user.setNickName(request.nickname());
-        user.setPart(request.part());
-        user.setLanguage(request.language());
-        user.setProfileImage(file_url);
-        user.setAgeRange(request.ageRange());
+
+        // 사용자 정보 업데이트
+        user.updateProfile(
+            request.name(),
+            request.nickname(),
+            request.part(),
+            request.language(),
+            request.ageRange(),
+            imageUrl
+        );
 
         userRepository.save(user);
     }
