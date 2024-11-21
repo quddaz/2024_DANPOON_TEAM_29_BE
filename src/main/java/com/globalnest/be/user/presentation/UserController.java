@@ -1,16 +1,16 @@
 package com.globalnest.be.user.presentation;
 
-import com.globalnest.be.global.application.AWSStorageService;
 import com.globalnest.be.global.dto.ResponseTemplate;
 import com.globalnest.be.oauth.dto.CustomOAuth2User;
 import com.globalnest.be.user.dto.request.FirstLoginRequest;
 import com.globalnest.be.user.dto.response.UserRecommendResponseList;
-import com.globalnest.be.user.aplication.UserService;
+import com.globalnest.be.user.application.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -24,15 +24,13 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
 
     private final UserService userService;
-    private final AWSStorageService awsStorageService;
 
-    @PostMapping("/first-login")
+    @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @Operation(summary = "첫 로그인 정보 기입")
-    public ResponseEntity<?> registerFirstLoginUser(@ModelAttribute FirstLoginRequest request,
-                                                    @RequestParam MultipartFile file,
+    public ResponseEntity<?> registerFirstLoginUser(@RequestPart FirstLoginRequest request,
+                                                    @RequestPart(required = false) MultipartFile file,
                                                     @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
-        String file_url = awsStorageService.uploadFile(file, "user");
-        userService.registerUser(request, file_url, customOAuth2User.getUserId());
+        userService.registerUser(request, customOAuth2User.getUserId(), file);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(ResponseTemplate.EMPTY_RESPONSE);
