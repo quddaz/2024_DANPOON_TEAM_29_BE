@@ -32,8 +32,6 @@ public class PetitionRepositoryImpl implements PetitionRepositoryCustom {
         QAgreement agreement = QAgreement.agreement;
         QUser user = QUser.user;
 
-
-        // Petition을 조회하는 쿼리
         return queryFactory
             .select(Projections.constructor(
                 PetitionDetailResponse.class,
@@ -45,20 +43,26 @@ public class PetitionRepositoryImpl implements PetitionRepositoryCustom {
                 agreement.count().intValue(),
                 petition.createdDate,
                 petition.agreementDeadline,
-                // 서브쿼리로 Agreement 존재 여부 확인
+                // Agreement 여부를 서브쿼리로 확인
                 JPAExpressions.selectOne()
                     .from(agreement)
                     .where(agreement.petition.id.eq(petition.id)
                         .and(agreement.user.id.eq(userId)))
+                    .exists(),
+                // MyPetition 여부를 서브쿼리로 확인
+                JPAExpressions.selectOne()
+                    .from(petition)
+                    .where(petition.user.id.eq(userId)
+                        .and(petition.id.eq(petitionId)))
                     .exists()
             ))
             .from(petition)
-            .leftJoin(user).on(user.id.eq(petition.user.id)) // Petition의 user와 User 엔티티 조인
-            .leftJoin(agreement).on(agreement.petition.id.eq(petition.id)) // Petition과 Agreement를 조인
-            .groupBy(petition.id, user.id) // Petition과 User로 그룹화
+            .leftJoin(user).on(user.id.eq(petition.user.id))
+            .leftJoin(agreement).on(agreement.petition.id.eq(petition.id))
             .where(petition.id.eq(petitionId))
             .fetchOne();
     }
+
 
     @Override
     public List<PetitionResponse> getPetitionResponses(PetitionSortRequest petitionSortRequest, int page, int size) {
@@ -71,6 +75,7 @@ public class PetitionRepositoryImpl implements PetitionRepositoryCustom {
         return queryFactory
             .select(Projections.constructor(
                 PetitionResponse.class,
+                petition.id,
                 petition.title,
                 petition.petitionType.stringValue(),
                 petition.createdDate,

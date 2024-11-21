@@ -53,13 +53,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 //        logInfo(GlobalErrorCode.INVALID_PARAMETER, e, request);
         return handleExceptionInternal(GlobalErrorCode.INVALID_PARAMETER);
     }
-/*
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleAllException(Exception e, HttpServletRequest request) {
 //        logError(e, request);
         return handleExceptionInternal(GlobalErrorCode.INTERNAL_SERVER_ERROR);
     }
-*/
+
     private ResponseEntity<Object> handleExceptionInternal(ErrorCode errorCode) {
         return ResponseEntity.status(errorCode.getHttpStatus())
                 .body(makeErrorResponse(errorCode));

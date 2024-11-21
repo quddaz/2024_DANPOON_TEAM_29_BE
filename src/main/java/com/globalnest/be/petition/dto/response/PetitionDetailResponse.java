@@ -1,6 +1,5 @@
 package com.globalnest.be.petition.dto.response;
 
-import com.globalnest.be.petition.domain.type.PetitionType;
 
 import java.time.LocalDate;
 
@@ -13,6 +12,7 @@ public record PetitionDetailResponse(
     Integer agreementCount,
     LocalDate createDate,
     LocalDate agreementDeadline,
-    boolean isAgreement
+    boolean isAgreement,
+    boolean isMyPetition
 ) {
 }
