@@ -38,7 +38,7 @@ public class Post extends BaseTimeEntity {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "content", nullable = false)
+    @Column(name = "content", nullable = false, length = 1000)
     private String content;
 
     @Column(name = "post_image_url")
