@@ -1,7 +1,5 @@
 package com.globalnest.be.oauth.util.jwt;
 
-
-import com.globalnest.be.oauth.util.jwt.JwtProperties;
 import com.globalnest.be.user.domain.User;
 import com.globalnest.be.user.exception.UserNotFoundException;
 import com.globalnest.be.user.exception.errorCode.UserErrorCode;
@@ -31,12 +29,12 @@ public class JwtTokenProvider {
     private final JwtProperties jwtProperties;
     private final UserRepository userRepository;
 
-
     @PostConstruct
     public void setKey() {
         byte[] keyBytes = Decoders.BASE64.decode(jwtProperties.secretKey());
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
+
     /**
      * AccessToken 생성 메소드
      */
@@ -47,15 +45,16 @@ public class JwtTokenProvider {
         Date accessValidity = new Date(now + jwtProperties.accessTokenExpiration());
 
         return Jwts.builder()
-            .setIssuedAt(new Date(now))
-            .setExpiration(accessValidity)
-            .setIssuer(jwtProperties.issuer())
-            .setSubject(memberId.toString())
-            .addClaims(Map.of(MEMBER_ROLE, roles))
-            .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-            .signWith(key, SignatureAlgorithm.HS512)
-            .compact();
+                .setIssuedAt(new Date(now))
+                .setExpiration(accessValidity)
+                .setIssuer(jwtProperties.issuer())
+                .setSubject(memberId.toString())
+                .addClaims(Map.of(MEMBER_ROLE, roles))
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
     }
+
     /**
      * RefreshToken 생성
      */
@@ -67,14 +66,14 @@ public class JwtTokenProvider {
 
         // Refresh token 생성
         String refreshToken = Jwts.builder()
-            .setIssuedAt(new Date(now))
-            .setExpiration(refreshValidity)
-            .setIssuer(jwtProperties.issuer())
-            .setSubject(memberId.toString())
-            .addClaims(Map.of(MEMBER_ROLE, roles))
-            .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
-            .signWith(key, SignatureAlgorithm.HS512)
-            .compact();
+                .setIssuedAt(new Date(now))
+                .setExpiration(refreshValidity)
+                .setIssuer(jwtProperties.issuer())
+                .setSubject(memberId.toString())
+                .addClaims(Map.of(MEMBER_ROLE, roles))
+                .setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+                .signWith(key, SignatureAlgorithm.HS512)
+                .compact();
 
         return createCookie(refreshToken);                       // 쿠키로 반환
     }
@@ -84,9 +83,9 @@ public class JwtTokenProvider {
         try {
             log.info("now date: {}", new Date());
             Jws<Claims> claims = Jwts.parserBuilder()
-                .setSigningKey(key)
-                .build()
-                .parseClaimsJws(token);
+                    .setSigningKey(key)
+                    .build()
+                    .parseClaimsJws(token);
             return claims.getBody().getExpiration().after(new Date());
         } catch (Exception e) {
             log.error("Token validation error: ", e);
@@ -96,19 +95,20 @@ public class JwtTokenProvider {
 
     public User getUser(String token) {
         Long id = Long.parseLong(Jwts.parserBuilder().setSigningKey(key).build()
-            .parseClaimsJws(token).getBody().getSubject());
+                .parseClaimsJws(token).getBody().getSubject());
 
         log.info("in getMember() socialId: {}", id);
 
         return userRepository.findById(id)
-            .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
+                .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
     }
+
     public ResponseCookie createCookie(String refreshToken) {
         return ResponseCookie.from("REFRESH_TOKEN", refreshToken)
-            .path("/")
-            .httpOnly(true)
-            .maxAge(jwtProperties.refreshTokenExpiration() / 1000)
-            .sameSite("Lax") // SameSite 설정
-            .build();
+                .path("/")
+                .httpOnly(true)
+                .maxAge(jwtProperties.refreshTokenExpiration() / 1000)
+                .sameSite("Lax") // SameSite 설정
+                .build();
     }
 }

@@ -38,18 +38,21 @@ public class Petition {
     private String content;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "petitionType", nullable = false, length = 20)
+    @Column(name = "petition_type", nullable = false)
     private PetitionType petitionType;
 
-    @Column(name = "agreementDeadline", nullable = false)
+    @Column(name = "agreement_deadline", nullable = false)
     private LocalDate agreementDeadline;
 
     @CreatedDate
-    @Column(name = "createdDate", updatable = false, nullable = false)
+    @Column(name = "created_date", updatable = false, nullable = false)
     private LocalDate createdDate;
 
     @Builder
-    public Petition(User user, String title, String purpose, String content, PetitionType petitionType, LocalDate agreementDeadline) {
+    public Petition(
+            User user, String title, String purpose, String content, PetitionType petitionType,
+            LocalDate agreementDeadline
+    ) {
         this.user = user;
         this.title = title;
         this.purpose = purpose;

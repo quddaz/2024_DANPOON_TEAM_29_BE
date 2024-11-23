@@ -6,7 +6,7 @@ import lombok.Builder;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record Message(
-    String role,
-    String content
+        String role,
+        String content
 ) {
 }

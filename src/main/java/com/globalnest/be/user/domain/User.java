@@ -1,7 +1,9 @@
 package com.globalnest.be.user.domain;
 
 
+import com.globalnest.be.oauth.dto.social.OAuth2Response;
 import com.globalnest.be.user.domain.type.*;
+import com.globalnest.be.user.dto.request.FirstLoginRequest;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -73,25 +75,36 @@ public class User {
         this.isAlarmAllowed = isAlarmAllowed;
         this.ageRange = ageRange;
     }
-    public void updateProfile(String name, String nickname, Part part, Language language,
-                              AgeRange ageRange, String profileImage) {
-        this.name = name;
-        this.nickName = nickname;
-        this.part = part;
-        this.language = language;
-        this.ageRange = ageRange;
+
+    public void updateProfile(FirstLoginRequest request, String profileImage) {
+        this.name = request.name();
+        this.nickName = request.nickname();
+        this.part = request.part();
+        this.language = request.language();
+        this.ageRange = request.ageRange();
+
         if (profileImage != null && !profileImage.isBlank()) {
             this.profileImage = profileImage;
         }
-    }
-
-    public String getRoleKey() {
-        return this.role.getKey();
     }
 
     public List<String> getRoles() {
         return List.of(this.role.name());
     }
 
-
+    public static User fromOAuth2Response(OAuth2Response oAuth2Response) {
+        return User.builder()
+                .email(oAuth2Response.getEmail())
+                .name(oAuth2Response.getName())
+                .nickName(oAuth2Response.getName())
+                .oAuthType(oAuth2Response.getProvider())
+                .socialId(oAuth2Response.getProviderId())
+                .role(Role.GUEST)
+                .profileImage(oAuth2Response.getProfileImage())
+                .language(Language.KOREAN)
+                .part(null)
+                .isAlarmAllowed(false)
+                .ageRange(null)
+                .build();
+    }
 }

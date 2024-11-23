@@ -30,4 +30,11 @@ public class Agreement {
         this.user=user;
         this.petition=petition;
     }
+
+    public static Agreement of(User user, Petition petition){
+        return Agreement.builder()
+                .user(user)
+                .petition(petition)
+                .build();
+    }
 }

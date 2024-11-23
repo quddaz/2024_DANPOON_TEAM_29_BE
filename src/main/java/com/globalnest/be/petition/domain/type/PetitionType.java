@@ -1,7 +1,10 @@
 package com.globalnest.be.petition.domain.type;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
-
+@Getter
+@RequiredArgsConstructor
 public enum PetitionType {
     WORKING_CONDITIONS("노동 환경 개선"),
     WAGES_AND_BENEFITS("임금 및 복지"),
@@ -13,9 +16,4 @@ public enum PetitionType {
     SOCIAL_RIGHTS_IMPROVEMENT("사회적 권리 향상");
 
     private final String description;
-
-    PetitionType(String description) {
-        this.description = description;
-    }
-    public String getDescription() { return description; }
 }

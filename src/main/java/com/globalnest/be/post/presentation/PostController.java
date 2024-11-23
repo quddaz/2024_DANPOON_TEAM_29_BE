@@ -32,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class PostController {
 
     private final PostService postService;
+
     @Operation(summary = "게시글 리스트 조회", description = "게시글 리스트를 조회합니다<br>"
             + "페이지 번호, 페이지 크기, 정렬 방식을 입력받아 게시글 리스트를 반환합니다<br>"
             + "page는 0번부터 시작")

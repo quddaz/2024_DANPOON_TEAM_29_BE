@@ -2,11 +2,9 @@ package com.globalnest.be.oauth.handler;
 
 import com.globalnest.be.oauth.dto.CustomOAuth2User;
 import com.globalnest.be.oauth.util.jwt.JwtTokenProvider;
-import com.globalnest.be.user.domain.User;
 import com.globalnest.be.user.exception.UserNotFoundException;
 import com.globalnest.be.user.exception.errorCode.UserErrorCode;
 import com.globalnest.be.user.repository.UserRepository;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +29,9 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final UserRepository userRepository;
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(
+            HttpServletRequest request, HttpServletResponse response, Authentication authentication
+    ) throws IOException {
         CustomOAuth2User authUser = (CustomOAuth2User) authentication.getPrincipal();
 
         String accessToken = jwtTokenProvider.createAccessToken(authUser.getUserId(), authUser.getRoles());
@@ -46,7 +46,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     public String determineRedirectUrl(CustomOAuth2User authUser) {
         return userRepository.findBySocialId(authUser.getSocialId())
-            .map(user -> user.getPart() == null ? firstRedirectUri : defaultRedirectUri)
-            .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
+                .map(user -> user.getPart() == null ? firstRedirectUri : defaultRedirectUri)
+                .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
     }
 }

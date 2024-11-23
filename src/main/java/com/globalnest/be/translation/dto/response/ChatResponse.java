@@ -7,6 +7,6 @@ import lombok.Builder;
 @Builder
 @JsonIgnoreProperties(ignoreUnknown = true)
 public record ChatResponse(
-    Choice[] choices
+        Choice[] choices
 ) {
 }

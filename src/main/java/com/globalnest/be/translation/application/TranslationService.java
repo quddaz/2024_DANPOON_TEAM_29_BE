@@ -45,7 +45,6 @@ public class TranslationService {
             // JSON 문자열을 객체로 변환
             return new JSONObject(objectMapper.readValue(chatResponse.choices()[0].message().content(), Map.class));
         } catch (Exception e) {
-            e.printStackTrace();
             return new JSONObject();
         }
     }
@@ -55,9 +54,7 @@ public class TranslationService {
         try {
             return objectMapper.writeValueAsString(inputData); // inputData를 JSON으로 변환
         } catch (JsonProcessingException e) {
-            e.printStackTrace();
             return "{}";
         }
     }
-
 }

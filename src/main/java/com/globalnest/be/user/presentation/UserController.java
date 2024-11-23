@@ -27,9 +27,11 @@ public class UserController {
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @Operation(summary = "첫 로그인 정보 기입")
-    public ResponseEntity<?> registerFirstLoginUser(@RequestPart FirstLoginRequest request,
-                                                    @RequestPart(required = false) MultipartFile file,
-                                                    @AuthenticationPrincipal CustomOAuth2User customOAuth2User) {
+    public ResponseEntity<?> registerFirstLoginUser(
+            @RequestPart FirstLoginRequest request,
+            @RequestPart(required = false) MultipartFile file,
+            @AuthenticationPrincipal CustomOAuth2User customOAuth2User
+    ) {
         userService.registerUser(request, customOAuth2User.getUserId(), file);
         return ResponseEntity
                 .status(HttpStatus.OK)
@@ -38,8 +40,10 @@ public class UserController {
 
     @Operation(summary = "유저 구독", description = "유저 구독")
     @GetMapping("/subscribe/{userId}")
-    public ResponseEntity<?> subscribeUser(@AuthenticationPrincipal CustomOAuth2User customOAuth2User,
-                                           @PathVariable Long userId) {
+    public ResponseEntity<?> subscribeUser(
+            @AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+            @PathVariable Long userId
+    ) {
         userService.subscribeUser(customOAuth2User.getUserId(), userId);
 
         return ResponseEntity

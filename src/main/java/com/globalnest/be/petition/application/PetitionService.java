@@ -34,8 +34,11 @@ public class PetitionService {
     private final UserService userService;
     private final AgreementRepository agreementRepository;
 
-    public PetitionResponseList findPetitionResponseList(int page, int size, PetitionSortRequest petitionSortRequest) {
-        List<PetitionResponse> petitionResponseList = petitionRepository.getPetitionResponses(petitionSortRequest, page, size);
+    public PetitionResponseList findPetitionResponseList(
+            int page, int size, PetitionSortRequest petitionSortRequest
+    ) {
+        List<PetitionResponse> petitionResponseList =
+                petitionRepository.getPetitionResponses(petitionSortRequest, page, size);
 
         boolean hasNext = petitionResponseList.size() == size + 1;
 
@@ -46,26 +49,23 @@ public class PetitionService {
         return PetitionResponseList.of(hasNext, page, size, petitionSortRequest, petitionResponseList);
     }
 
-    public PetitionDetailResponse findPetitionDetail(Long petitionId, Long userId){
-        return petitionRepository.getPetitionDetail(petitionId,userId);
+    public PetitionDetailResponse findPetitionDetail(Long petitionId, Long userId) {
+        return petitionRepository.getPetitionDetail(petitionId, userId);
     }
 
     @Transactional
-    public void uploadPetition(Long userId, PetitionUploadRequest petitionUploadRequest){
+    public void uploadPetition(Long userId, PetitionUploadRequest petitionUploadRequest) {
         User user = userService.findUserById(userId);
 
-        Petition petition = petitionUploadRequest.toEntity(user);
-        Petition newPetition = petitionRepository.save(petition);
+        Petition newPetition = petitionRepository.save(petitionUploadRequest.toEntity(user));
 
-        Agreement agreement = Agreement.builder()
-            .user(user)
-            .petition(newPetition)
-            .build();
+        Agreement agreement = Agreement.of(user, newPetition);
+
         agreementRepository.save(agreement);
     }
 
     @Transactional
-    public void markingAgreement(Long petitionId, Long userId){
+    public void markingAgreement(Long petitionId, Long userId) {
         Petition petition = findById(petitionId);
         User user = userService.findUserById(userId);
 
@@ -75,19 +75,15 @@ public class PetitionService {
         }
 
         // 이미 해당 사용자가 동의한 경우 예외 처리
-        if(agreementRepository.existsByPetitionAndUser(petition, user)){
+        if (agreementRepository.existsByPetitionAndUser(petition, user)) {
             throw new AgreementDuplicateException(AgreementErrorCode.AGREEMENT_DUPLICATE);
         }
 
-        Agreement agreement = Agreement.builder()
-            .user(user)
-            .petition(petition)
-            .build();
-        agreementRepository.save(agreement);
+        agreementRepository.save(Agreement.of(user, petition));
     }
 
-    public Petition findById(Long petitionId){
+    public Petition findById(Long petitionId) {
         return petitionRepository.findById(petitionId)
-            .orElseThrow(()-> new PetitionNotFoundException(PetitionErrorCode.PETITION_NOT_FOUND));
+                .orElseThrow(() -> new PetitionNotFoundException(PetitionErrorCode.PETITION_NOT_FOUND));
     }
 }

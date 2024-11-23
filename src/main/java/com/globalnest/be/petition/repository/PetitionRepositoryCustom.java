@@ -7,9 +7,6 @@ import com.globalnest.be.petition.dto.response.PetitionResponse;
 import java.util.List;
 
 public interface PetitionRepositoryCustom {
-
-
     PetitionDetailResponse getPetitionDetail(Long petitionId, Long userId);
-
     List<PetitionResponse> getPetitionResponses(PetitionSortRequest petitionSortRequest, int page, int size);
 }

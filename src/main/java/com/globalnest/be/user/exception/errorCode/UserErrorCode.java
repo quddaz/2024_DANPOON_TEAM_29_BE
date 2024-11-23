@@ -1,6 +1,5 @@
 package com.globalnest.be.user.exception.errorCode;
 
-
 import com.globalnest.be.global.exception.errorcode.ErrorCode;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;

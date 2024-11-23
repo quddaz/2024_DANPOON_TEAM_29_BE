@@ -7,6 +7,5 @@ import java.util.List;
 public interface PostRepositoryCustom {
 
     List<PostRepoResponse> findPostResponseList(Long userId, int page, int size, SortType sortType);
-
     PostRepoResponse findPostDetailResponse(Long userId, Long postId);
 }
