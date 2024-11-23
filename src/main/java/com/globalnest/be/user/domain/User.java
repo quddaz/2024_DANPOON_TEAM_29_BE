@@ -21,13 +21,13 @@ public class User {
     @Column(name = "id", nullable = false)
     private Long id;
 
-    @Column(name = "email", nullable = false, length = 25)
+    @Column(name = "email", nullable = false, length = 50)
     private String email;
 
-    @Column(name = "name", nullable = false, length = 20)
+    @Column(name = "name", nullable = false, length = 40)
     private String name;
 
-    @Column(name = "nick_name", nullable = false, length = 20)
+    @Column(name = "nick_name", nullable = false, length = 40)
     private String nickName;
 
     @Enumerated(EnumType.STRING)
