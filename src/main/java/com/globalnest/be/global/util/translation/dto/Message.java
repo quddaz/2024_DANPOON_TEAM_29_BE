@@ -1,4 +1,4 @@
-package com.globalnest.be.translation.dto;
+package com.globalnest.be.global.util.translation.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Builder;

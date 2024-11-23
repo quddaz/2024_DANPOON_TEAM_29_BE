@@ -1,6 +1,7 @@
 package com.globalnest.be.user.presentation;
 
 import com.globalnest.be.global.dto.ResponseTemplate;
+import com.globalnest.be.global.util.translation.TranslationConverter;
 import com.globalnest.be.oauth.dto.CustomOAuth2User;
 import com.globalnest.be.user.dto.request.FirstLoginRequest;
 import com.globalnest.be.user.dto.response.UserRecommendResponseList;
@@ -24,6 +25,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserController {
 
     private final UserService userService;
+    private final TranslationConverter translationConverter;
 
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
     @Operation(summary = "첫 로그인 정보 기입")
@@ -54,16 +56,16 @@ public class UserController {
     @Operation(summary = "유저 추천 리스트", description = "유저 추천 리스트")
     @GetMapping("/recommend")
     public ResponseEntity<?> findUserRecommendList(
-            @AuthenticationPrincipal CustomOAuth2User customOAuth2User,
+            @AuthenticationPrincipal CustomOAuth2User user,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(defaultValue = "0") int page
     ) {
 
         UserRecommendResponseList userRecommendList =
-                userService.findUserRecommendList(customOAuth2User.getUserId(), size, page);
+                userService.findUserRecommendList(user.getUserId(), size, page);
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(userRecommendList);
+                .body(translationConverter.getChatResponse(userRecommendList, user.getLanguage()));
     }
 }

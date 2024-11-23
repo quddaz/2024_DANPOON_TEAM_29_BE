@@ -1,6 +1,6 @@
-package com.globalnest.be.translation.dto.request;
+package com.globalnest.be.global.util.translation.dto.request;
 
-import com.globalnest.be.translation.dto.Message;
+import com.globalnest.be.global.util.translation.dto.Message;
 import com.globalnest.be.user.domain.type.Language;
 import lombok.Builder;
 
