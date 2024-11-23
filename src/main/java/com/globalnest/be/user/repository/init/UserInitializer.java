@@ -33,57 +33,32 @@ public class UserInitializer implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) {
         if (userRepository.count() > 0) {
-            log.info("[User]더미 데이터 존재");
+            log.info("[User] 더미 데이터 존재");
         } else {
             List<User> userList = new ArrayList<>();
 
-            User DUMMY_ADMIN = User.builder()
-                    .email("admin@naver.com")
-                    .name("관리자")
-                    .nickName("admin")
-                    .language(Language.CHINESE)
-                    .oAuthType(OAuthType.KAKAO)
-                    .socialId("1234567890")
-                    .part(Part.CONSTRUCTION)
-                    .profileImage("https://" + bucket + ".s3.ap-northeast-2.amazonaws.com" + DUMMY_PROFILE_IMAGE_URL)
-                    .isAlarmAllowed(true)
-                    .role(Role.ADMIN)
-                    .ageRange(AgeRange.FORTIES)
-                    .build();
+            // 각 Part에 대한 더미 사용자 생성
+            for (Part part : Part.values()) {
+                User user = User.builder()
+                        .email(part.name().toLowerCase() + "@naver.com") // 직종 이름을 기반으로 이메일 생성
+                        .name(part.getCategory() + " 사용자") // 직종 이름을 사용하여 이름 생성
+                        .nickName(part.name().toLowerCase()) // 직종 이름을 사용하여 닉네임 생성
+                        .language(Language.ENGLISH) // 모든 사용자에게 동일한 언어 설정
+                        .oAuthType(OAuthType.KAKAO)
+                        .socialId("123456789" + part.ordinal()) // 각 Part의 인덱스를 사용하여 socialId 생성
+                        .part(part) // 현재 Part 설정
+                        .profileImage(
+                                "https://" + bucket + ".s3.ap-northeast-2.amazonaws.com" + DUMMY_PROFILE_IMAGE_URL)
+                        .isAlarmAllowed(true)
+                        .role(Role.MEMBER) // 모든 사용자는 일반 사용자로 설정
+                        .ageRange(AgeRange.FORTIES) // 연령대 설정
+                        .build();
 
-            User DUMMY_USER1 = User.builder()
-                    .email("user@naver.com")
-                    .name("유저")
-                    .nickName("user")
-                    .language(Language.ENGLISH)
-                    .oAuthType(OAuthType.KAKAO)
-                    .socialId("123456789012")
-                    .part(Part.AGRICULTURE)
-                    .profileImage("https://" + bucket + ".s3.ap-northeast-2.amazonaws.com" + DUMMY_PROFILE_IMAGE_URL)
-                    .isAlarmAllowed(true)
-                    .role(Role.MEMBER)
-                    .ageRange(AgeRange.FORTIES)
-                    .build();
-
-            User DUMMY_USER2 = User.builder()
-                    .email("user2@naver.com")
-                    .name("유저2")
-                    .nickName("user2")
-                    .language(Language.KOREAN)
-                    .oAuthType(OAuthType.KAKAO)
-                    .socialId("1234567890123")
-                    .part(Part.AGRICULTURE)
-                    .profileImage("https://" + bucket + ".s3.ap-northeast-2.amazonaws.com" + DUMMY_PROFILE_IMAGE_URL)
-                    .isAlarmAllowed(true)
-                    .role(Role.MEMBER)
-                    .ageRange(AgeRange.FORTIES)
-                    .build();
-
-            userList.add(DUMMY_ADMIN);
-            userList.add(DUMMY_USER1);
-            userList.add(DUMMY_USER2);
+                userList.add(user);
+            }
 
             userRepository.saveAll(userList);
+            log.info("[User] 더미 데이터 삽입 완료");
         }
     }
 }
