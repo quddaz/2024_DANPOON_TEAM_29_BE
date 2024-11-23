@@ -30,23 +30,26 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     @Override
     public void onAuthenticationSuccess(
-            HttpServletRequest request, HttpServletResponse response, Authentication authentication
+        HttpServletRequest request, HttpServletResponse response, Authentication authentication
     ) throws IOException {
         CustomOAuth2User authUser = (CustomOAuth2User) authentication.getPrincipal();
 
         String accessToken = jwtTokenProvider.createAccessToken(authUser.getUserId(), authUser.getRoles());
-        ResponseCookie refreshToken = jwtTokenProvider.createRefreshToken(authUser.getUserId(), authUser.getRoles());
-
-        response.setHeader("Authorization", "Bearer " + accessToken);
-        response.addHeader("Set-Cookie", refreshToken.toString());
+        String refreshToken = jwtTokenProvider.createRefreshToken(authUser.getUserId(), authUser.getRoles());
 
         String redirectUrl = determineRedirectUrl(authUser);
+        if (redirectUrl.equals(firstRedirectUri)) {
+            redirectUrl += "?refreshToken=" + refreshToken;
+        } else {
+            redirectUrl += "?accessToken=" + accessToken + "&refreshToken=" + refreshToken;
+        }
+
         response.sendRedirect(redirectUrl);
     }
 
     public String determineRedirectUrl(CustomOAuth2User authUser) {
         return userRepository.findBySocialId(authUser.getSocialId())
-                .map(user -> user.getPart() == null ? firstRedirectUri : defaultRedirectUri)
-                .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
+            .map(user -> user.getPart() == null ? firstRedirectUri : defaultRedirectUri)
+            .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
     }
 }
