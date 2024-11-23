@@ -65,7 +65,7 @@ public class PostService {
                 })
                 .toList();
 
-        return PostResponseList.of(hasNext, page, size, sortType, postResponseList);
+        return PostResponseList.of(hasNext, page, size, sortType, part, postResponseList);
     }
 
     public PostDetailResponse findPostDetailResponse(
