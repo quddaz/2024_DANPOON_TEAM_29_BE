@@ -10,7 +10,6 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Component;
 
@@ -23,9 +22,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 @Component
 public class JwtTokenProvider {
-
-    @Value("${cookie.domain}")
-    private String domain;
 
     private Key key;
     private static final String MEMBER_ROLE = "role";
@@ -111,8 +107,7 @@ public class JwtTokenProvider {
         return ResponseCookie.from("REFRESH_TOKEN", refreshToken)
                 .maxAge(jwtProperties.refreshTokenExpiration() / 1000)
                 .path("/")
-                .domain(domain)
-                .secure(true)
+//                .secure(true)
                 .sameSite("Lax")
                 .httpOnly(true)
                 .build();
