@@ -109,6 +109,7 @@ public class JwtTokenProvider {
                 .httpOnly(true)
                 .maxAge(jwtProperties.refreshTokenExpiration() / 1000)
                 .sameSite("None") // SameSite 설정
+                .secure(false)
                 .build();
     }
 }
