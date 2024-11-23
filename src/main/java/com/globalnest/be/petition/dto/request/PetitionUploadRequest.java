@@ -8,21 +8,21 @@ import jakarta.validation.constraints.NotNull;
 import java.time.LocalDate;
 
 public record PetitionUploadRequest(
-    @NotNull String title,
-    @NotNull String purpose,
-    @NotNull String content,
-    @NotNull PetitionType petitionType,
-    @NotNull LocalDate agreementDeadline
+        @NotNull String title,
+        @NotNull String purpose,
+        @NotNull String content,
+        @NotNull PetitionType petitionType,
+        @NotNull LocalDate agreementDeadline
 ) {
 
     public Petition toEntity(User user) {
         return Petition.builder()
-            .user(user)
-            .title(title)
-            .purpose(purpose)
-            .content(content)
-            .petitionType(petitionType)
-            .agreementDeadline(agreementDeadline)
-            .build();
+                .user(user)
+                .title(title)
+                .purpose(purpose)
+                .content(content)
+                .petitionType(petitionType)
+                .agreementDeadline(agreementDeadline)
+                .build();
     }
 }

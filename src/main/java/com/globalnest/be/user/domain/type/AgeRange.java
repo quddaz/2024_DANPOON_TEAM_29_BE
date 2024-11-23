@@ -1,7 +1,9 @@
 package com.globalnest.be.user.domain.type;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Getter
 public enum AgeRange {
     NULL("미상"),
@@ -12,8 +14,4 @@ public enum AgeRange {
     FIFTIES_AND_ABOVE("50UP");
 
     private final String description;
-
-    AgeRange(String description) {
-        this.description = description;
-    }
 }

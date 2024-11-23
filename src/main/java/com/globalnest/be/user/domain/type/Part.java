@@ -1,7 +1,9 @@
 package com.globalnest.be.user.domain.type;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 @Getter
 public enum Part {
     MANUFACTURING("제조업"),
@@ -14,8 +16,4 @@ public enum Part {
     PROFESSIONAL("전문직");
 
     private final String category; // 직종 이름
-
-    Part(String category) {
-        this.category = category;
-    }
 }

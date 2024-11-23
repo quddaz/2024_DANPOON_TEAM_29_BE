@@ -36,13 +36,14 @@ public class PetitionInitializer implements ApplicationRunner {
 
             for (int i = 1; i <= 10; i++) {
                 Petition petition = Petition.builder()
-                    .user(i % 2 == 0 ? DUMMY_USER1 : DUMMY_USER2)
-                    .title("제목 " + i)
-                    .purpose("취지 " + i)
-                    .content("내용 " + i)
-                    .petitionType(PetitionType.values()[i % PetitionType.values().length])
-                    .agreementDeadline(LocalDate.now().plusDays(i * 7))
-                    .build();
+                        .user(i % 2 == 0 ? DUMMY_USER1 : DUMMY_USER2)
+                        .title("제목 " + i)
+                        .purpose("취지 " + i)
+                        .content("내용 " + i)
+                        .petitionType(PetitionType.values()[i % PetitionType.values().length])
+                        .agreementDeadline(LocalDate.now().plusDays(i * 7))
+                        .build();
+
                 petitions.add(petition);
             }
 

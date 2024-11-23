@@ -1,8 +1,6 @@
 package com.globalnest.be.oauth.dto.social;
 
 
-
-
 import com.globalnest.be.user.domain.type.OAuthType;
 
 import java.util.Map;

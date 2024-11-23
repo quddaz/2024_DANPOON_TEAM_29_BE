@@ -26,6 +26,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final SubscribeRepository subscribeRepository;
     private final AWSStorageService awsStorageService;
+
     /**
      * 첫 로그인 시 정보를 받아오는 메소드
      */
@@ -37,14 +38,7 @@ public class UserService {
                 .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));
 
         // 사용자 정보 업데이트
-        user.updateProfile(
-            request.name(),
-            request.nickname(),
-            request.part(),
-            request.language(),
-            request.ageRange(),
-            imageUrl
-        );
+        user.updateProfile(request, imageUrl);
 
         userRepository.save(user);
     }
@@ -60,9 +54,7 @@ public class UserService {
     }
 
     public UserRecommendResponseList findUserRecommendList(
-            Long userId,
-            int size,
-            int page
+            Long userId, int size, int page
     ) {
         User user = userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(UserErrorCode.USER_NOT_FOUND));

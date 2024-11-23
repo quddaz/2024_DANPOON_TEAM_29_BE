@@ -6,6 +6,6 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class AgreementDuplicateException extends RuntimeException{
+public class AgreementDuplicateException extends RuntimeException {
     private final ErrorCode errorCode;
 }

@@ -10,7 +10,9 @@ public record PostDetailResponse(
         List<CommentResponse> commentResponseList
 ) {
 
-    public static PostDetailResponse of(boolean hasNext, int size, PostResponse postResponse, List<CommentResponse> commentResponseList) {
+    public static PostDetailResponse of(
+            boolean hasNext, int size, PostResponse postResponse, List<CommentResponse> commentResponseList
+    ) {
         return new PostDetailResponse(hasNext, size, postResponse, commentResponseList);
     }
 }

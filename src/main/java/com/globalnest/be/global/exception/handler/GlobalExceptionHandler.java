@@ -9,13 +9,14 @@ import com.globalnest.be.global.exception.response.ErrorResponse.ValidationError
 import jakarta.servlet.http.HttpServletRequest;
 import java.util.List;
 
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,7 +33,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(FileConvertFailException.class)
     public ResponseEntity<Object> handleFileConvertFail(FileConvertFailException e, HttpServletRequest request) {
-//        logInfo(e.getErrorCode(), e, request);
+        logInfo(e.getErrorCode(), e, request);
         return handleExceptionInternal(e.getErrorCode());
     }
 
@@ -50,13 +51,13 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Object> handleIllegalArgument(IllegalArgumentException e, HttpServletRequest request) {
-//        logInfo(GlobalErrorCode.INVALID_PARAMETER, e, request);
+        logInfo(GlobalErrorCode.INVALID_PARAMETER, e, request);
         return handleExceptionInternal(GlobalErrorCode.INVALID_PARAMETER);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Object> handleAllException(Exception e, HttpServletRequest request) {
-//        logError(e, request);
+        logError(e, request);
         return handleExceptionInternal(GlobalErrorCode.INTERNAL_SERVER_ERROR);
     }
 
@@ -95,32 +96,32 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
     }
 
-//    private void logInfo(ErrorCode ec, Exception e, HttpServletRequest request) {
-//        log.info(LOG_FORMAT_INFO, request.getMethod(), request.getRequestURI(), getUserId(),
-//                getRole(), ec.getHttpStatus(), e.getClass().getName(), e.getMessage());
-//    }
-//
-//    private void logError(Exception e, HttpServletRequest request) {
-//        log.error(LOG_FORMAT_ERROR, request.getMethod(), request.getRequestURI(), getUserId(), getRole(), e);
-//    }
+    private void logInfo(ErrorCode ec, Exception e, HttpServletRequest request) {
+        log.info(LOG_FORMAT_INFO, request.getMethod(), request.getRequestURI(), getUserId(),
+                getRole(), ec.getHttpStatus(), e.getClass().getName(), e.getMessage());
+    }
 
-//    private String getUserId() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//        if (authentication != null && authentication.isAuthenticated()) {
-//            return authentication.getName(); // 사용자의 id
-//        } else {
-//            return "anonymous";
-//        }
-//    }
-//
-//    private String getRole() {
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//
-//        if (authentication != null && authentication.isAuthenticated()) {
-//            return authentication.getAuthorities().toString(); // 사용자의 role
-//        } else {
-//            return "anonymous";
-//        }
-//    }
+    private void logError(Exception e, HttpServletRequest request) {
+        log.error(LOG_FORMAT_ERROR, request.getMethod(), request.getRequestURI(), getUserId(), getRole(), e);
+    }
+
+    private String getUserId() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            return authentication.getName(); // 사용자의 id
+        } else {
+            return "anonymous";
+        }
+    }
+
+    private String getRole() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.isAuthenticated()) {
+            return authentication.getAuthorities().toString(); // 사용자의 role
+        } else {
+            return "anonymous";
+        }
+    }
 }

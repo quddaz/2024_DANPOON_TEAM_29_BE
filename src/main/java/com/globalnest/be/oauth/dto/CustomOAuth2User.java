@@ -1,5 +1,6 @@
 package com.globalnest.be.oauth.dto;
 
+import com.globalnest.be.user.domain.User;
 import com.globalnest.be.user.domain.type.Language;
 import com.globalnest.be.user.domain.type.Part;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,7 @@ public class CustomOAuth2User implements OAuth2User {
     private final List<String> roles;
     private final Part part;
     private final Language language;
+
     @Override
     public Map<String, Object> getAttributes() {
         return null;
@@ -35,8 +37,20 @@ public class CustomOAuth2User implements OAuth2User {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
-            .map(SimpleGrantedAuthority::new)
-            .collect(Collectors.toList());
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 
+    public static CustomOAuth2User fromUser(User user) {
+        return CustomOAuth2User.builder()
+                .userId(user.getId())
+                .socialId(user.getSocialId())
+                .name(user.getName())
+                .nickname(user.getNickName())
+                .email(user.getEmail())
+                .roles(List.of(user.getRole().name()))
+                .part(user.getPart())
+                .language(user.getLanguage())
+                .build();
+    }
 }

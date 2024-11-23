@@ -16,12 +16,14 @@ public record ResponseTemplate<T>(
             .message("요청이 승인되었습니다.")
             .results(Collections.EMPTY_MAP)
             .build();
+
     public static final ResponseTemplate<Object> JSON_AUTH_ERROR = ResponseTemplate.builder()
         .isSuccess(false)
         .code("JSON_AUTH_ERROR")
         .message("로그인 후 다시 접근해주시기 바랍니다.")
         .results(Collections.EMPTY_MAP)
         .build();
+
     public static final ResponseTemplate<Object> JSON_ROLE_ERROR = ResponseTemplate.builder()
         .isSuccess(false)
         .code("JSON_ROLE_ERROR")

@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 
 @Getter
 @RequiredArgsConstructor
-public class PetitionExpiredException extends RuntimeException{
+public class PetitionExpiredException extends RuntimeException {
     private final ErrorCode errorCode;
 }
-
