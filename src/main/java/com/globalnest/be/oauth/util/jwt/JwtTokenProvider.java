@@ -108,7 +108,7 @@ public class JwtTokenProvider {
                 .path("/")
                 .httpOnly(true)
                 .maxAge(jwtProperties.refreshTokenExpiration() / 1000)
-                .sameSite("Lax") // SameSite 설정
+                .sameSite("None") // SameSite 설정
                 .build();
     }
 }
