@@ -38,7 +38,7 @@ public class PostController {
             + "페이지 번호, 페이지 크기, 정렬 방식을 입력받아 게시글 리스트를 반환합니다<br>"
             + "page는 0번부터 시작")
     @GetMapping
-    public ResponseEntity<ResponseTemplate<?>> getNearbyLecturePlaces(
+    public ResponseEntity<?> getNearbyLecturePlaces(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
             @RequestParam(required = false) SortType sortType,
@@ -50,13 +50,13 @@ public class PostController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ResponseTemplate.from(postResponseList));
+                .body(postResponseList);
     }
 
     @Operation(summary = "게시글 상세 조회", description = "게시글 상세 정보를 조회합니다. 마지막 확인 댓글 ID를 기준으로 댓글을 조회합니다<br>"
             + "이후 댓글은 /comments/{postId} API를 통해 추가 조회합니다")
     @GetMapping("/{postId}")
-    public ResponseEntity<ResponseTemplate<?>> getPostDetail(
+    public ResponseEntity<?> getPostDetail(
             @PathVariable Long postId,
             @RequestParam(defaultValue = "0") Long lastCommentId,
             @RequestParam(defaultValue = "5") int size,
@@ -67,13 +67,13 @@ public class PostController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ResponseTemplate.from(postDetailResponse));
+                .body(postDetailResponse);
     }
 
     @Operation(summary = "게시글 업로드", description = "게시글을 업로드합니다<br>"
             + "Tag는 자율로 입력")
     @PostMapping(consumes = {MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE})
-    public ResponseEntity<ResponseTemplate<?>> uploadPost(
+    public ResponseEntity<?> uploadPost(
             @RequestPart PostUploadRequest postUploadRequest,
             @RequestPart(required = false) MultipartFile file,
             @AuthenticationPrincipal CustomOAuth2User user
@@ -82,12 +82,12 @@ public class PostController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ResponseTemplate.EMPTY_RESPONSE);
+                .body(null);
     }
 
     @Operation(summary = "게시글 좋아요 저장/삭제", description = "게시글 좋아요 저장/삭제")
     @GetMapping("/like/{postId}")
-    public ResponseEntity<ResponseTemplate<?>> saveBookMark(
+    public ResponseEntity<?> saveBookMark(
             @PathVariable Long postId,
             @AuthenticationPrincipal CustomOAuth2User user
     ) {
@@ -95,6 +95,6 @@ public class PostController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ResponseTemplate.from(result));
+                .body(result);
     }
 }
