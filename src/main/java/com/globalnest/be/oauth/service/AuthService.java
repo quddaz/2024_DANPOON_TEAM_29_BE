@@ -27,7 +27,7 @@ public class AuthService {
         String accessToken = jwtTokenProvider.createAccessToken(user.getId(), user.getRoles());
         String newRefreshToken = jwtTokenProvider.createRefreshToken(user.getId(), user.getRoles());
 
-        response.addHeader("Set-Cookie", newRefreshToken.toString());
+        response.addHeader("Set-Cookie", newRefreshToken);
         response.setHeader("Authorization", "Bearer " + accessToken);
     }
 
