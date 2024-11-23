@@ -58,7 +58,7 @@ public class JwtTokenProvider {
     /**
      * RefreshToken 생성
      */
-    public ResponseCookie createRefreshToken(Long memberId, List<String> roles) {
+    public String createRefreshToken(Long memberId, List<String> roles) {
         long now = (new Date()).getTime();
 
         // Refresh token 유효 기간 설정
@@ -75,7 +75,7 @@ public class JwtTokenProvider {
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
-        return createCookie(refreshToken);                       // 쿠키로 반환
+        return refreshToken;                   // 쿠키로 반환
     }
 
 
