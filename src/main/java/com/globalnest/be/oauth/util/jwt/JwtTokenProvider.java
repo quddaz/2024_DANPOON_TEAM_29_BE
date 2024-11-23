@@ -105,11 +105,12 @@ public class JwtTokenProvider {
 
     public ResponseCookie createCookie(String refreshToken) {
         return ResponseCookie.from("REFRESH_TOKEN", refreshToken)
-                .path("/")
-                .httpOnly(true)
                 .maxAge(jwtProperties.refreshTokenExpiration() / 1000)
-                .sameSite("None") // SameSite 설정
-                .secure(true)
+                .path("/")
+                .domain("localhost")
+//                .secure(true)
+                .sameSite("Lax")
+                .httpOnly(true)
                 .build();
     }
 }
