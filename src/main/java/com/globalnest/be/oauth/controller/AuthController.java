@@ -18,7 +18,7 @@ public class AuthController {
 
     @GetMapping("/reissue")
     public ResponseEntity<ResponseTemplate<?>> reIssueToken(
-        @RequestHeader("Refresh_token") String refreshToken, HttpServletResponse response) {
+        @RequestParam String refreshToken, HttpServletResponse response) {
 
         authService.reIssueToken(refreshToken, response);
 
