@@ -33,7 +33,7 @@ public record ChatRequest(
 
     public static ChatRequest fromCustomRequest(String requestContent, Language language) {
         return ChatRequest.builder()
-                .model("gpt-3.5-turbo")
+                .model("gpt-4-turbo")
                 .messages(new Message[]{
                         new Message("system", COMMON_SYSTEM_MESSAGE),
                         new Message("user", requestContent),
