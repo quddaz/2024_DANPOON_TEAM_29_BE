@@ -107,8 +107,8 @@ public class JwtTokenProvider {
         return ResponseCookie.from("REFRESH_TOKEN", refreshToken)
                 .maxAge(jwtProperties.refreshTokenExpiration() / 1000)
                 .path("/")
-//                .secure(true)
-                .sameSite("Lax")
+                .secure(true)
+                .sameSite("None")
                 .httpOnly(true)
                 .build();
     }
