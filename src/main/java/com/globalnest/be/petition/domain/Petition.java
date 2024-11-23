@@ -1,6 +1,5 @@
 package com.globalnest.be.petition.domain;
 
-import com.globalnest.be.petition.domain.timeEntity.PetitionTimeEntity;
 import com.globalnest.be.petition.domain.type.PetitionType;
 import com.globalnest.be.user.domain.User;
 import jakarta.persistence.*;
@@ -8,6 +7,8 @@ import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 
@@ -15,7 +16,9 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Petition extends PetitionTimeEntity {
+@EntityListeners(AuditingEntityListener.class)
+public class Petition {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
@@ -40,6 +43,10 @@ public class Petition extends PetitionTimeEntity {
 
     @Column(name = "agreementDeadline", nullable = false)
     private LocalDate agreementDeadline;
+
+    @CreatedDate
+    @Column(name = "createdDate", updatable = false, nullable = false)
+    private LocalDate createdDate;
 
     @Builder
     public Petition(User user, String title, String purpose, String content, PetitionType petitionType, LocalDate agreementDeadline) {

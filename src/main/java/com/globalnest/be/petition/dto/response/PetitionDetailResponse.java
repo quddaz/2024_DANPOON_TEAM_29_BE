@@ -12,7 +12,9 @@ public record PetitionDetailResponse(
     Integer agreementCount,
     LocalDate createDate,
     LocalDate agreementDeadline,
+    //청원 동의 여부
     boolean isAgreement,
+    //내 청원인지 여부
     boolean isMyPetition
 ) {
 }
