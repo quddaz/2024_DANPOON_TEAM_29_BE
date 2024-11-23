@@ -19,6 +19,7 @@ import com.globalnest.be.post.repository.PostRepository;
 import com.globalnest.be.post.repository.PostTagRepository;
 import com.globalnest.be.user.domain.User;
 import com.globalnest.be.user.application.UserService;
+import com.globalnest.be.user.domain.type.Part;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import lombok.RequiredArgsConstructor;
@@ -40,8 +41,11 @@ public class PostService {
     private final UserService userService;
     private final AWSStorageService awsStorageService;
 
-    public PostResponseList findPostResponseList(Long userId, int page, int size, SortType sortType) {
-        List<PostRepoResponse> postRepoResponseList = postRepository.findPostResponseList(userId, page, size, sortType);
+    public PostResponseList findPostResponseList(
+            Long userId, int page, int size, SortType sortType, Part part
+    ) {
+        List<PostRepoResponse> postRepoResponseList =
+                postRepository.findPostResponseList(userId, page, size, sortType, part);
 
         boolean hasNext = postRepoResponseList.size() == size + 1;
 

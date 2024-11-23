@@ -7,6 +7,7 @@ import com.globalnest.be.post.application.type.SortType;
 import com.globalnest.be.post.dto.request.PostUploadRequest;
 import com.globalnest.be.post.dto.response.PostDetailResponse;
 import com.globalnest.be.post.dto.response.PostResponseList;
+import com.globalnest.be.user.domain.type.Part;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -40,10 +41,12 @@ public class PostController {
     public ResponseEntity<ResponseTemplate<?>> getNearbyLecturePlaces(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "5") int size,
-            @RequestParam SortType sortType,
+            @RequestParam(required = false) SortType sortType,
+            @RequestParam(required = false) Part part,
             @AuthenticationPrincipal CustomOAuth2User user
     ) {
-        PostResponseList postResponseList = postService.findPostResponseList(user.getUserId(), page, size, sortType);
+        PostResponseList postResponseList =
+                postService.findPostResponseList(user.getUserId(), page, size, sortType, part);
 
         return ResponseEntity
                 .status(HttpStatus.OK)

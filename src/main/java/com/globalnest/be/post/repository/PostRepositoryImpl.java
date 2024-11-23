@@ -6,6 +6,7 @@ import static com.globalnest.be.post.domain.QPostLike.postLike;
 import com.globalnest.be.post.application.type.SortType;
 import com.globalnest.be.post.dto.response.AuthorSimpleInfoResponse;
 import com.globalnest.be.post.repository.dto.PostRepoResponse;
+import com.globalnest.be.user.domain.type.Part;
 import com.querydsl.core.types.OrderSpecifier;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.JPAExpressions;
@@ -21,7 +22,9 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
     private final JPAQueryFactory jpaQueryFactory;
 
     @Override
-    public List<PostRepoResponse> findPostResponseList(Long userId, int page, int size, SortType sortType) {
+    public List<PostRepoResponse> findPostResponseList(
+            Long userId, int page, int size, SortType sortType, Part part
+    ) {
         return jpaQueryFactory
                 .select(Projections.constructor(PostRepoResponse.class,
                         Projections.constructor(AuthorSimpleInfoResponse.class,
@@ -45,6 +48,7 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
                 .from(post)
                 .leftJoin(post.postLikeList) // 좋아요 리스트와 조인
                 .leftJoin(post.user) // 작성자 정보와 조인
+                .where(part == null ? null : post.user.part.eq(part)) // 파트에 따라 필터링
                 .groupBy(post.id) // 포스트 ID로 그룹화
                 .orderBy(orderSpecifier(sortType)) // 정렬
                 .offset((long) page * size) // 페이지 번호에 따라 결과를 가져오도록 설정
@@ -54,6 +58,10 @@ public class PostRepositoryImpl implements PostRepositoryCustom {
 
 
     private OrderSpecifier<?> orderSpecifier(SortType sortType) {
+        if (sortType == null) {
+            return post.createdDate.desc();
+        }
+
         return switch (sortType) {
             case CREATED_AT_DESC -> post.createdDate.desc();
             case LIKE_DESC -> post.postLikeList.size().desc();
