@@ -32,7 +32,7 @@ public class CommentController {
     @Operation(summary = "게시글 댓글 페이징", description = "게시글의 댓글을 추가 조회합니다.<br>"
             + "/posts/{postId} API에서 마지막 댓글 ID를 기준으로 추가 조회합니다")
     @GetMapping("/{postId}")
-    public ResponseEntity<ResponseTemplate<?>> getPostDetail(
+    public ResponseEntity<?> getPostDetail(
             @PathVariable Long postId,
             @RequestParam(defaultValue = "0") Long lastCommentId,
             @RequestParam(defaultValue = "5") int size
@@ -41,12 +41,12 @@ public class CommentController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ResponseTemplate.from(commentResponseList));
+                .body(commentResponseList);
     }
 
     @Operation(summary = "댓글 작성", description = "게시글에 댓글을 작성합니다")
     @PostMapping("/{postId}")
-    public ResponseEntity<ResponseTemplate<?>> writeComment(
+    public ResponseEntity<?> writeComment(
             @PathVariable Long postId,
             @RequestBody CommentWriteRequest request,
             @AuthenticationPrincipal CustomOAuth2User customOAuth2User
@@ -55,6 +55,6 @@ public class CommentController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ResponseTemplate.EMPTY_RESPONSE);
+                .body(null);
     }
 }

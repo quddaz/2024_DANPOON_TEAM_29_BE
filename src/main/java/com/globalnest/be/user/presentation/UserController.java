@@ -35,7 +35,7 @@ public class UserController {
         userService.registerUser(request, customOAuth2User.getUserId(), file);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ResponseTemplate.EMPTY_RESPONSE);
+                .body(null);
     }
 
     @Operation(summary = "유저 구독", description = "유저 구독")
@@ -48,7 +48,7 @@ public class UserController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ResponseTemplate.EMPTY_RESPONSE);
+                .body(null);
     }
 
     @Operation(summary = "유저 추천 리스트", description = "유저 추천 리스트")
@@ -64,6 +64,6 @@ public class UserController {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ResponseTemplate.from(userRecommendList));
+                .body(userRecommendList);
     }
 }

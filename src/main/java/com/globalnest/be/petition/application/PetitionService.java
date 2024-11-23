@@ -2,6 +2,7 @@ package com.globalnest.be.petition.application;
 
 import com.globalnest.be.petition.domain.Agreement;
 import com.globalnest.be.petition.domain.Petition;
+import com.globalnest.be.petition.domain.type.PetitionType;
 import com.globalnest.be.petition.dto.request.PetitionSortRequest;
 import com.globalnest.be.petition.dto.request.PetitionUploadRequest;
 import com.globalnest.be.petition.dto.response.PetitionDetailResponse;
@@ -35,10 +36,12 @@ public class PetitionService {
     private final AgreementRepository agreementRepository;
 
     public PetitionResponseList findPetitionResponseList(
-            int page, int size, PetitionSortRequest petitionSortRequest
+        int page, int size, Boolean includeExpired,
+        PetitionType petitionType, Boolean sortByAgreementCount
     ) {
         List<PetitionResponse> petitionResponseList =
-                petitionRepository.getPetitionResponses(petitionSortRequest, page, size);
+            petitionRepository.getPetitionResponses(includeExpired, petitionType,
+                sortByAgreementCount, page, size);
 
         boolean hasNext = petitionResponseList.size() == size + 1;
 
@@ -46,7 +49,8 @@ public class PetitionService {
             petitionResponseList = petitionResponseList.subList(0, petitionResponseList.size() - 1);
         }
 
-        return PetitionResponseList.of(hasNext, page, size, petitionSortRequest, petitionResponseList);
+        return PetitionResponseList.of(hasNext, page, size, includeExpired,
+            petitionType, sortByAgreementCount, petitionResponseList);
     }
 
     public PetitionDetailResponse findPetitionDetail(Long petitionId, Long userId) {
@@ -84,6 +88,6 @@ public class PetitionService {
 
     public Petition findById(Long petitionId) {
         return petitionRepository.findById(petitionId)
-                .orElseThrow(() -> new PetitionNotFoundException(PetitionErrorCode.PETITION_NOT_FOUND));
+            .orElseThrow(() -> new PetitionNotFoundException(PetitionErrorCode.PETITION_NOT_FOUND));
     }
 }
