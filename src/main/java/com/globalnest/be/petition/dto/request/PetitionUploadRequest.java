@@ -11,8 +11,7 @@ public record PetitionUploadRequest(
         @NotNull String title,
         @NotNull String purpose,
         @NotNull String content,
-        @NotNull PetitionType petitionType,
-        @NotNull LocalDate agreementDeadline
+        @NotNull PetitionType petitionType
 ) {
 
     public Petition toEntity(User user) {
@@ -22,7 +21,7 @@ public record PetitionUploadRequest(
                 .purpose(purpose)
                 .content(content)
                 .petitionType(petitionType)
-                .agreementDeadline(agreementDeadline)
+                .agreementDeadline(LocalDate.now().plusDays(90))
                 .build();
     }
 }
