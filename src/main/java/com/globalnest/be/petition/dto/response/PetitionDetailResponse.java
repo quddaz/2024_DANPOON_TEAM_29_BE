@@ -9,7 +9,7 @@ public record PetitionDetailResponse(
         String petitionType,
         String name,
         Integer agreementCount,
-        LocalDate createDate,
+        LocalDate createdDate,
         LocalDate agreementDeadline,
         //청원 동의 여부
         boolean isAgreement,
