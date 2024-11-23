@@ -42,7 +42,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
         String redirectUrl = determineRedirectUrl(authUser);
 
-        getRedirectStrategy().sendRedirect(request, response, redirectUrl);
+        response.sendRedirect(redirectUrl);
     }
 
     public String determineRedirectUrl(CustomOAuth2User authUser) {
