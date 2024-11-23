@@ -38,6 +38,7 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String refreshToken = jwtTokenProvider.createRefreshToken(authUser.getUserId(), authUser.getRoles());
 
         String redirectUrl = determineRedirectUrl(authUser);
+
         if (redirectUrl.equals(firstRedirectUri)) {
             redirectUrl += "?refreshToken=" + refreshToken;
         } else {
