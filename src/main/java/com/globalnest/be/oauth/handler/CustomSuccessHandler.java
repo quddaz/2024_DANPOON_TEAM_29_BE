@@ -41,7 +41,8 @@ public class CustomSuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         response.addHeader("Set-Cookie", refreshToken.toString());
 
         String redirectUrl = determineRedirectUrl(authUser);
-        response.sendRedirect(redirectUrl);
+
+        getRedirectStrategy().sendRedirect(request, response, redirectUrl);
     }
 
     public String determineRedirectUrl(CustomOAuth2User authUser) {
