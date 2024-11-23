@@ -1,7 +1,7 @@
-package com.globalnest.be.translation.dto.response;
+package com.globalnest.be.global.util.translation.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.globalnest.be.translation.dto.Choice;
+import com.globalnest.be.global.util.translation.dto.Choice;
 import lombok.Builder;
 
 @Builder

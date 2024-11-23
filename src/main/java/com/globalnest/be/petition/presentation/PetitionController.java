@@ -1,14 +1,12 @@
 package com.globalnest.be.petition.presentation;
 
-import com.globalnest.be.global.dto.ResponseTemplate;
 import com.globalnest.be.oauth.dto.CustomOAuth2User;
 import com.globalnest.be.petition.application.PetitionService;
 import com.globalnest.be.petition.domain.type.PetitionType;
-import com.globalnest.be.petition.dto.request.PetitionSortRequest;
 import com.globalnest.be.petition.dto.request.PetitionUploadRequest;
 import com.globalnest.be.petition.dto.response.PetitionDetailResponse;
 import com.globalnest.be.petition.dto.response.PetitionResponseList;
-import com.globalnest.be.translation.application.TranslationService;
+import com.globalnest.be.global.util.translation.TranslationConverter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -27,7 +25,7 @@ import org.springframework.web.bind.annotation.*;
 public class PetitionController {
 
     private final PetitionService petitionService;
-    private final TranslationService translationService;
+    private final TranslationConverter translationConverter;
 
     @Operation(summary = "청원 업로드", description = "청원을 업로드합니다<br>")
     @PostMapping
@@ -60,7 +58,7 @@ public class PetitionController {
 
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(translationService.getChatResponse(petitionResponseList, user.getLanguage()));
+            .body(translationConverter.getChatResponse(petitionResponseList, user.getLanguage()));
     }
 
     @Operation(summary = "청원 상세 페이지 조회", description = "청원 상세 페이지를 조회합니다")
@@ -74,7 +72,7 @@ public class PetitionController {
 
         return ResponseEntity
             .status(HttpStatus.OK)
-            .body(translationService.getChatResponse(petitionDetailResponse, user.getLanguage()));
+            .body(translationConverter.getChatResponse(petitionDetailResponse, user.getLanguage()));
     }
 
     @Operation(summary = "청원 서명 로직", description = "청원 상세 페이지에서 서명을 합니다.")
