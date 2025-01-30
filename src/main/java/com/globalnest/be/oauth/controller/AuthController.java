@@ -18,13 +18,12 @@ public class AuthController {
 
     @GetMapping("/reissue")
     public ResponseEntity<ResponseTemplate<?>> reIssueToken(
-        @RequestParam String refreshToken, HttpServletResponse response) {
-
+        @CookieValue(name = "REFRESH_TOKEN") String refreshToken, HttpServletResponse response) {
         authService.reIssueToken(refreshToken, response);
 
         return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(ResponseTemplate.EMPTY_RESPONSE);
+            .status(HttpStatus.OK)
+            .body(ResponseTemplate.EMPTY_RESPONSE);
     }
 
     @Operation(summary = "테스트 토큰 발급", description = "userId를 받아 테스트 토큰을 발급합니다")
